@@ -18,23 +18,31 @@ class _SymptomQuestion3ScreenState extends State<SymptomQuestion3Screen> {
   String? _q6Code; // behavior
 
   static const List<(String, String)> _q4Options = [
-    ('A', 'No smell'),
-    ('B', 'Mild odor'),
-    ('C', 'Strong musty'),
+    ('A', 'No unusual smell'),
+    ('B', 'Mild odour'),
+    ('C', 'Strong or unpleasant smell'),
   ];
 
-  static const List<(String, String)> _q5Options = [
-    ('A', 'Outdoor/mud'),
-    ('B', 'Indoor'),
-    ('C', 'Damp areas'),
-    ('D', 'Other animals'),
-    ('E', 'Allergens'),
-  ];
+  // Q5 options differ by pet: dogs have 5 options, cats have 4
+  List<(String, String)> _q5Options(String pet) => pet == 'Dog'
+      ? const [
+          ('A', 'Outdoor / mud'),
+          ('B', 'Mostly indoors'),
+          ('C', 'Damp or humid area'),
+          ('D', 'Near other dogs'),
+          ('E', 'Allergens / dust'),
+        ]
+      : const [
+          ('A', 'Normal indoor and outdoor access'),
+          ('B', 'Mostly indoors'),
+          ('C', 'Damp or humid environment'),
+          ('D', 'Recently in contact with other animals'),
+        ];
 
   static const List<(String, String)> _q6Options = [
-    ('A', 'Normal'),
-    ('B', 'Restless'),
-    ('C', 'Uncomfortable'),
+    ('A', 'Acting normally'),
+    ('B', 'Restless or unsettled'),
+    ('C', 'Uncomfortable or irritable'),
   ];
 
   void _submit() {
@@ -56,6 +64,8 @@ class _SymptomQuestion3ScreenState extends State<SymptomQuestion3Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final pet = context.read<DiagnosisProvider>().selectedPet;
+    final q5Opts = _q5Options(pet);
     return AppScaffold(
       showBack: true,
       child: SingleChildScrollView(
@@ -95,7 +105,7 @@ class _SymptomQuestion3ScreenState extends State<SymptomQuestion3Screen> {
             _buildCard(
               icon: Icons.nature_people_rounded,
               question: 'Any recent environmental contact?',
-              options: _q5Options,
+              options: q5Opts,
               selectedCode: _q5Code,
               onSelected: (code) => setState(() => _q5Code = code),
             ),
@@ -104,7 +114,7 @@ class _SymptomQuestion3ScreenState extends State<SymptomQuestion3Screen> {
             // Q6 — Behavior
             _buildCard(
               icon: Icons.psychology_rounded,
-              question: "Has your dog's behavior changed?",
+              question: "Has your ${pet.toLowerCase()}'s behavior changed?",
               options: _q6Options,
               selectedCode: _q6Code,
               onSelected: (code) => setState(() => _q6Code = code),

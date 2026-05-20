@@ -40,9 +40,9 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 14),
                   _buildFeatureGrid(context),
                   const SizedBox(height: 28),
-                  const Text('Common Pet Skin Conditions', style: AppTextStyles.heading2),
+                  const Text('Common Skin Conditions', style: AppTextStyles.heading2),
                   const SizedBox(height: 14),
-                  _buildDiseaseCards(),
+                  _buildDiseaseCards(context),
                   const SizedBox(height: 100),
                 ],
               ),
@@ -86,18 +86,22 @@ class HomeScreen extends StatelessWidget {
 
 
   Widget _buildWelcomeCard(BuildContext context) {
+    final pet = context.watch<DiagnosisProvider>().selectedPet;
+    final isCat = pet == 'Cat';
     return Container(
       padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFF6C63FF), Color(0xFF9B97FF)],
+        gradient: LinearGradient(
+          colors: isCat
+              ? const [Color(0xFFFF6584), Color(0xFFFF9A9E)]
+              : const [Color(0xFF6C63FF), Color(0xFF9B97FF)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.3),
+            color: (isCat ? const Color(0xFFFF6584) : AppColors.primary).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 8),
           ),
@@ -106,9 +110,11 @@ class HomeScreen extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Is Your Pet\nFeeling Unwell? 🐾',
-            style: TextStyle(
+          Text(
+            isCat
+                ? 'Is Your Cat\nFeeling Unwell? 🐈'
+                : 'Is Your Pet\nFeeling Unwell? 🐾',
+            style: const TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.white,
@@ -116,7 +122,9 @@ class HomeScreen extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            'Answer a few symptom questions and let AI help identify your pet\'s skin condition.',
+            isCat
+                ? 'Answer a few symptom questions and let AI identify your cat\'s skin condition.'
+                : 'Answer a few symptom questions and let AI help identify your pet\'s skin condition.',
             style: TextStyle(
               fontSize: 12,
               color: Colors.white.withValues(alpha: 0.9),
@@ -133,7 +141,7 @@ class HomeScreen extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
-                foregroundColor: AppColors.primary,
+                foregroundColor: isCat ? const Color(0xFFFF6584) : AppColors.primary,
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -169,14 +177,24 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDiseaseCards() {
-    final diseases = [
-      {'name': 'Mange', 'icon': '🦠', 'color': const Color(0xFFFFECEC)},
-      {'name': 'Ringworm', 'icon': '🍄', 'color': const Color(0xFFFFF3E0)},
-      {'name': 'Fungal Infection', 'icon': '🍄', 'color': const Color(0xFFFFF9E6)},
-      {'name': 'Demodicosis', 'icon': '🦟', 'color': const Color(0xFFEDF7ED)},
-      {'name': 'Bacterial Dermatosis', 'icon': '🧫', 'color': const Color(0xFFE8F4FF)},
-    ];
+  Widget _buildDiseaseCards(BuildContext context) {
+    final pet = context.watch<DiagnosisProvider>().selectedPet;
+    final diseases = pet == 'Cat'
+        ? [
+            {'name': 'Alopecia',      'icon': '🐾', 'color': const Color(0xFFFFECEC)},
+            {'name': 'Ringworm',      'icon': '🍄', 'color': const Color(0xFFFFF3E0)},
+            {'name': 'Flea Allergy',  'icon': '🦟', 'color': const Color(0xFFFFF9E6)},
+            {'name': 'Dermatitis',    'icon': '💊', 'color': const Color(0xFFEDF7ED)},
+            {'name': 'Scabies',       'icon': '🦠', 'color': const Color(0xFFFFEEF5)},
+            {'name': 'Healthy',       'icon': '✅', 'color': const Color(0xFFE8F4FF)},
+          ]
+        : [
+            {'name': 'Mange',                'icon': '🦠', 'color': const Color(0xFFFFECEC)},
+            {'name': 'Ringworm',             'icon': '🍄', 'color': const Color(0xFFFFF3E0)},
+            {'name': 'Fungal Infection',     'icon': '🍄', 'color': const Color(0xFFFFF9E6)},
+            {'name': 'Demodicosis',          'icon': '🦟', 'color': const Color(0xFFEDF7ED)},
+            {'name': 'Bacterial Dermatosis', 'icon': '🧫', 'color': const Color(0xFFE8F4FF)},
+          ];
 
     return Wrap(
       spacing: 10,

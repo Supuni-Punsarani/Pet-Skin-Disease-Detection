@@ -1,15 +1,15 @@
 """
-Disease class labels — matches the 6 classes in pawscan_swin_final.pth exactly.
-Index order matches the 'disease_classes' list embedded in the checkpoint.
+Disease class labels — 6 cat skin disease classes in pawscan_swin_final.pth.
+Index order is alphabetical (PyTorch ImageFolder default sort).
 """
 
 DISEASE_CLASSES = [
-    "Bacterial Dermatosis",         # 0
-    "Demodicosis",                  # 1
-    "Fungal Infections",            # 2
-    "Healthy",                      # 3
-    "Hypersensitivity Dermatitis",  # 4
-    "Ringworm",                     # 5
+    "Alopecia",       # 0 — 324 train / 65 test
+    "Dermatitis",     # 1 — 343 train / 69 test
+    "Flea Allergy",   # 2 — 534 train / 107 test
+    "Healthy",        # 3 — 245 train / 49 test
+    "Ringworm",       # 4 — 687 train / 137 test
+    "Scabies",        # 5 — 465 train / 93 test
 ]
 
 NUM_CLASSES = len(DISEASE_CLASSES)

@@ -16,20 +16,37 @@ class _SymptomQuestion2ScreenState extends State<SymptomQuestion2Screen> {
   String? _q2Code; // scratching
   String? _q3Code; // skin look
 
-  static const List<(String, String)> _q2Options = [
-    ('A', 'Normal'),
-    ('B', 'Mild'),
-    ('C', 'Frequent'),
-    ('D', 'Intense'),
-  ];
+  // Options are built dynamically in build() based on pet type
+  List<(String, String)> _q2Options(String pet) => pet == 'Dog'
+      ? const [
+          ('A', 'Normal scratching'),
+          ('B', 'Mild scratching'),
+          ('C', 'Frequent scratching and licking'),
+          ('D', 'Intense — cannot stop scratching'),
+        ]
+      : const [
+          ('A', 'Normal occasional grooming'),
+          ('B', 'Mild scratching or extra grooming'),
+          ('C', 'Frequent scratching and licking'),
+          ('D', 'Intense — cannot stop scratching'),
+        ];
 
-  static const List<(String, String)> _q3Options = [
-    ('A', 'Red patches'),
-    ('B', 'Hair loss'),
-    ('C', 'Flaky/greasy'),
-    ('D', 'Clean'),
-    ('E', 'Red+bumps'),
-  ];
+  List<(String, String)> _q3Options(String pet) => pet == 'Dog'
+      ? const [
+          ('A', 'Red patches'),
+          ('B', 'Hair loss'),
+          ('C', 'Flaky/greasy'),
+          ('D', 'Clean'),
+          ('E', 'Red+bumps'),
+        ]
+      : const [
+          ('A', 'Red patches or inflamed skin'),
+          ('B', 'Hair loss or bald patches'),
+          ('C', 'Flaky, scaly or greasy coat'),
+          ('D', 'Clean and normal appearance'),
+          ('E', 'Bumps, scabs or raised areas'),
+          ('F', 'Moist, weeping or crusty skin'),
+        ];
 
   void _next() {
     if (_q2Code == null || _q3Code == null) {
@@ -49,6 +66,13 @@ class _SymptomQuestion2ScreenState extends State<SymptomQuestion2Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final pet = context.read<DiagnosisProvider>().selectedPet;
+    final q2Opts = _q2Options(pet);
+    final q3Opts = _q3Options(pet);
+    final q2Question = pet == 'Dog'
+        ? 'Is your dog scratching or licking the affected area?'
+        : 'Is your pet scratching, licking, or over-grooming the affected area?';
+
     return AppScaffold(
       showBack: true,
       child: SingleChildScrollView(
@@ -74,11 +98,11 @@ class _SymptomQuestion2ScreenState extends State<SymptomQuestion2Screen> {
                 style: AppTextStyles.heading1),
             const SizedBox(height: 20),
 
-            // Q2 — Scratching
+            // Q2 — Grooming / Scratching
             _buildCard(
               icon: Icons.pets_rounded,
-              question: 'Is your dog scratching or licking the affected area?',
-              options: _q2Options,
+              question: q2Question,
+              options: q2Opts,
               selectedCode: _q2Code,
               onSelected: (code) => setState(() => _q2Code = code),
             ),
@@ -88,7 +112,7 @@ class _SymptomQuestion2ScreenState extends State<SymptomQuestion2Screen> {
             _buildCard(
               icon: Icons.visibility_rounded,
               question: 'What does the affected skin look like?',
-              options: _q3Options,
+              options: q3Opts,
               selectedCode: _q3Code,
               onSelected: (code) => setState(() => _q3Code = code),
             ),

@@ -1,7 +1,7 @@
 """
 PetDerm AI — FastAPI Backend
 =============================
-Serves the SwinFusion model for pet skin disease diagnosis.
+Serves two SwinFusion models for cat and dog skin disease diagnosis.
 
 Run with:
     uvicorn main:app --reload --host 0.0.0.0 --port 8000
@@ -16,7 +16,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 
-from model.swin_fusion import model_instance
+from model.swin_fusion import cat_model_instance, dog_model_instance, predict_for_pet
 
 # ─── Logging ──────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -29,9 +29,10 @@ logger = logging.getLogger(__name__)
 # ─── Startup / Shutdown ───────────────────────────────────────────────────────
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Load the model once at startup, release resources at shutdown."""
+    """Load both models at startup, release resources at shutdown."""
     logger.info("🚀 Starting PetDerm AI backend…")
-    model_instance.load_model()
+    cat_model_instance.load_model()
+    dog_model_instance.load_model()
     yield
     logger.info("🛑 Shutting down PetDerm AI backend.")
 
@@ -39,15 +40,14 @@ async def lifespan(app: FastAPI):
 # ─── App ──────────────────────────────────────────────────────────────────────
 app = FastAPI(
     title="PetDerm AI API",
-    description="AI-powered pet skin disease diagnosis using SwinFusion.",
-    version="1.0.0",
+    description="AI-powered cat and dog skin disease diagnosis using SwinFusion.",
+    version="2.0.0",
     lifespan=lifespan,
 )
 
-# Allow Flutter app to reach this server (CORS)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Tighten this in production
+    allow_origins=["*"],
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
@@ -57,13 +57,11 @@ app.add_middleware(
 
 @app.get("/health")
 async def health_check():
-    """
-    Simple health check. The Flutter app calls this first to confirm the
-    backend is reachable before sending the full image + symptoms.
-    """
+    """Simple health check — confirms both models are loaded."""
     return {
         "status": "ok",
-        "model_loaded": model_instance._loaded,
+        "cat_model_loaded": cat_model_instance._loaded,
+        "dog_model_loaded": dog_model_instance._loaded,
     }
 
 
@@ -77,6 +75,10 @@ async def predict(
             '{"q1":"B","q2":"C","q3":"A","q4":"A","q5":"A","q6":"B"}'
         ),
     ),
+    pet_type: str = Form(
+        default="cat",
+        description="Pet type: 'cat' or 'dog'",
+    ),
 ):
     """
     Diagnose pet skin condition from an image + 6 symptom answers.
@@ -84,20 +86,29 @@ async def predict(
     **Request** (multipart/form-data):
     - `image`    — JPEG or PNG file
     - `symptoms` — JSON string: `{"q1":"A","q2":"B","q3":"C","q4":"A","q5":"A","q6":"A"}`
+    - `pet_type` — `"cat"` or `"dog"` (default: `"cat"`)
 
     **Response** (JSON):
     ```json
     {
-        "disease":          "Mange (Sarcoptic)",
+        "disease":          "Ringworm",
         "confidence":       0.87,
-        "severity":         "Severe",
-        "urgency":          "See vet within 48 hours",
+        "severity":         "Moderate",
+        "urgency":          "See vet within 1 week",
         "description":      "...",
         "treatments":       ["...", "..."],
-        "matched_symptoms": ["Duration: 1–2 weeks", "Scratching: Intense"]
+        "matched_symptoms": ["Duration: 1 to 2 weeks", "Grooming: Mild scratching"]
     }
     ```
     """
+    # Validate pet type
+    pet_type_lower = pet_type.strip().lower()
+    if pet_type_lower not in ("cat", "dog"):
+        raise HTTPException(
+            status_code=400,
+            detail=f"Invalid pet_type '{pet_type}'. Must be 'cat' or 'dog'.",
+        )
+
     # Validate image MIME type
     if image.content_type not in ("image/jpeg", "image/png", "image/jpg", "image/webp"):
         raise HTTPException(
@@ -111,7 +122,7 @@ async def predict(
     except json.JSONDecodeError:
         raise HTTPException(
             status_code=400,
-            detail="'symptoms' must be a valid JSON string, e.g. {\"q1\":\"A\",\"q2\":\"B\",...}",
+            detail="'symptoms' must be a valid JSON string.",
         )
 
     # Read image bytes
@@ -119,15 +130,15 @@ async def predict(
     if not image_bytes:
         raise HTTPException(status_code=400, detail="Image file is empty.")
 
-    # Run prediction
+    # Run prediction using the correct model
     try:
-        result = model_instance.predict(image_bytes, symptom_codes)
+        result = predict_for_pet(pet_type_lower, image_bytes, symptom_codes)
     except Exception as exc:
         logger.exception("Prediction failed")
         raise HTTPException(status_code=500, detail=f"Prediction error: {str(exc)}")
 
     logger.info(
-        f"Predicted: {result['disease']} "
+        f"[{pet_type_lower}] Predicted: {result['disease']} "
         f"(confidence={result['confidence']:.2%}, severity={result['severity']})"
     )
     return result

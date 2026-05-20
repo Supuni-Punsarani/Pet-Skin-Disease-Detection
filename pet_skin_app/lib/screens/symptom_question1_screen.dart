@@ -15,13 +15,21 @@ class SymptomQuestion1Screen extends StatefulWidget {
 class _SymptomQuestion1ScreenState extends State<SymptomQuestion1Screen> {
   String? _selectedCode;
 
-  static const List<(String, String)> _options = [
-    ('A', 'Less than 1 week'),
-    ('B', '1-2 weeks'),
-    ('C', 'More than 2 weeks'),
-    ('D', 'Seasonal'),
-    ('E', 'No problem'),
-  ];
+  List<(String, String)> _options(String pet) => pet == 'Dog'
+      ? const [
+          ('A', 'Less than 1 week'),
+          ('B', '1-2 weeks'),
+          ('C', 'More than 2 weeks'),
+          ('D', 'Seasonal'),
+          ('E', 'No problem'),
+        ]
+      : const [
+          ('A', 'Less than 1 week'),
+          ('B', '1 to 2 weeks'),
+          ('C', 'More than 2 weeks'),
+          ('D', 'Comes and goes / recurring'),
+          ('E', 'No skin problem'),
+        ];
 
   void _next() {
     if (_selectedCode == null) {
@@ -39,6 +47,8 @@ class _SymptomQuestion1ScreenState extends State<SymptomQuestion1Screen> {
 
   @override
   Widget build(BuildContext context) {
+    final pet = context.read<DiagnosisProvider>().selectedPet;
+    final opts = _options(pet);
     return AppScaffold(
       showBack: true,
       child: Padding(
@@ -95,7 +105,7 @@ class _SymptomQuestion1ScreenState extends State<SymptomQuestion1Screen> {
                     ],
                   ),
                   const SizedBox(height: 16),
-                  ..._options.map(
+                  ...opts.map(
                     (opt) => LabeledOption(
                       code: opt.$1,
                       label: opt.$2,

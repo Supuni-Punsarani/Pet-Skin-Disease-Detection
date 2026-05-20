@@ -93,15 +93,11 @@ class SelectPetScreen extends StatelessWidget {
                           'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&q=80',
                       fallbackEmoji: '🐈',
                       label: 'Cat',
-                      isComingSoon: true,
+                      isComingSoon: false,
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text(
-                                '🐈 Cat support coming soon! Stay tuned.'),
-                            backgroundColor: AppColors.primary,
-                          ),
-                        );
+                        context.read<DiagnosisProvider>().selectPet('Cat');
+                        context.read<DiagnosisProvider>().reset();
+                        Navigator.pushNamed(context, '/signin');
                       },
                     ).animate().fadeIn(delay: 300.ms).slideX(begin: 0.3, end: 0),
                   ],

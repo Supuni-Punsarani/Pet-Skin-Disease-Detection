@@ -60,6 +60,9 @@ class ApiService {
     });
     request.fields['symptoms'] = symptomsJson;
 
+    // Send pet type so backend routes to the correct model
+    request.fields['pet_type'] = petType.toLowerCase();
+
     // Send with 30s timeout
     http.StreamedResponse streamedResponse;
     try {
