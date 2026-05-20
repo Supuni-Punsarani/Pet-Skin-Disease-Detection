@@ -1,0 +1,73 @@
+# ===== Python Backend =====
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+*.log
+
+# Virtual environment
+backend/venv/
+backend/env/
+backend/.venv/
+
+# Model files (large binary files - add separately if needed)
+backend/model/*.pt
+backend/model/*.pth
+backend/model/*.h5
+backend/model/*.pkl
+backend/model/*.bin
+backend/model/*.onnx
+
+# ===== Flutter / Dart =====
+# See pet_skin_app/.gitignore for Flutter-specific ignores
+pet_skin_app/.dart_tool/
+pet_skin_app/.flutter-plugins-dependencies
+pet_skin_app/.pub-cache/
+pet_skin_app/.pub/
+pet_skin_app/build/
+pet_skin_app/coverage/
+pet_skin_app/.metadata
+
+# Android build artifacts
+pet_skin_app/android/app/debug/
+pet_skin_app/android/app/profile/
+pet_skin_app/android/app/release/
+pet_skin_app/android/.gradle/
+pet_skin_app/android/local.properties
+
+# iOS build artifacts
+pet_skin_app/ios/Pods/
+pet_skin_app/ios/.symlinks/
+pet_skin_app/ios/Flutter/.last_build_id
+
+# ===== IDE / Editor =====
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ===== Logs & Temp files =====
+*.log
+hs_err_pid*.log
+analyze*.txt
+build_log.txt
+build_output.txt
+pub_output.txt
+windows_run.txt
+
+# ===== Secrets / Keys =====
+*.env
+.env
+google-services.json
+GoogleService-Info.plist
