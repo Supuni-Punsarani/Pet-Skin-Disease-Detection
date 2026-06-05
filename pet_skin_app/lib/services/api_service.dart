@@ -21,6 +21,10 @@ import '../models/symptom_answer.dart';
 /// ──────────────────────────────────────────────────────────────────────────
 const String _kBackendBaseUrl = 'http://192.168.8.102:8000';
 
+const String _kConnectionErrorMsg =
+    'Cannot connect to the server at $_kBackendBaseUrl.\n'
+    'Make sure the FastAPI backend is running and the URL is correct.';
+
 class ApiService {
   /// Sends the dog image + 6 symptom answer codes to the FastAPI backend
   /// and returns a [DiseaseResult] on success.
@@ -68,15 +72,12 @@ class ApiService {
     try {
       streamedResponse = await request.send().timeout(
         const Duration(seconds: 30),
-        onTimeout: () => throw ApiException(
+        onTimeout: () => throw const ApiException(
           'Request timed out. Check that the backend server is running.',
         ),
       );
     } on SocketException {
-      throw ApiException(
-        'Cannot connect to the server at $_kBackendBaseUrl.\n'
-        'Make sure the FastAPI backend is running and the URL is correct.',
-      );
+      throw const ApiException(_kConnectionErrorMsg);
     }
 
     final responseBody = await streamedResponse.stream.bytesToString();

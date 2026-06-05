@@ -127,8 +127,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     const SizedBox(height: 20),
 
-                    Center(
-                      child: const Text(
+                    const Center(
+                      child: Text(
                         'Sign In',
                         style: TextStyle(
                           fontSize: 24,

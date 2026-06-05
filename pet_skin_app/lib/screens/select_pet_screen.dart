@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../theme/app_theme.dart';
 import '../providers/diagnosis_provider.dart';
-import '../providers/auth_provider.dart';
 
 class SelectPetScreen extends StatelessWidget {
   const SelectPetScreen({super.key});

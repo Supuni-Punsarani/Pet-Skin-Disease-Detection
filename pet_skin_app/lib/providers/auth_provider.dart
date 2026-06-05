@@ -60,19 +60,31 @@ class AuthProvider extends ChangeNotifier {
       // Update display name in Firebase Auth
       await credential.user?.updateDisplayName(name);
 
-      // Save full profile to Firestore
-      await FirestoreService.saveUserProfile(
-        uid: credential.user!.uid,
-        name: name,
-        email: email.trim(),
-        phone: phone,
-        dob: dob,
-        gender: gender,
-        petName: petName,
-        petBreed: petBreed,
-        petAge: petAge,
-        petWeight: petWeight,
-      );
+      try {
+        // Save full profile to Firestore
+        await FirestoreService.saveUserProfile(
+          uid: credential.user!.uid,
+          name: name,
+          email: email.trim(),
+          phone: phone,
+          dob: dob,
+          gender: gender,
+          petName: petName,
+          petBreed: petBreed,
+          petAge: petAge,
+          petWeight: petWeight,
+        );
+      } catch (firestoreError) {
+        // If Firestore save fails, delete the orphan Auth user so the
+        // user can retry registration with the same email address.
+        await credential.user?.delete();
+        _errorMessage =
+            'Account setup failed. Please check your internet connection and try again.\n'
+            'Detail: $firestoreError';
+        _isLoading = false;
+        notifyListeners();
+        return false;
+      }
 
       _displayName = name;
       _firebaseUser = credential.user;
@@ -81,6 +93,12 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } on FirebaseAuthException catch (e) {
       _errorMessage = _mapAuthError(e.code);
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      // Catches any other unexpected errors.
+      _errorMessage = 'Registration failed: ${e.toString()}';
       _isLoading = false;
       notifyListeners();
       return false;
@@ -109,6 +127,12 @@ class AuthProvider extends ChangeNotifier {
       return true;
     } on FirebaseAuthException catch (e) {
       _errorMessage = _mapAuthError(e.code);
+      _isLoading = false;
+      notifyListeners();
+      return false;
+    } catch (e) {
+      // Catches network errors, Firestore errors, and any other unexpected errors.
+      _errorMessage = 'Sign-in failed: ${e.toString()}';
       _isLoading = false;
       notifyListeners();
       return false;
@@ -208,13 +232,18 @@ class AuthProvider extends ChangeNotifier {
       case 'weak-password':
         return 'Password must be at least 6 characters.';
       case 'user-not-found':
+      case 'invalid-credential':
         return 'No account found with this email.';
       case 'wrong-password':
         return 'Incorrect password. Please try again.';
       case 'too-many-requests':
         return 'Too many attempts. Please try again later.';
+      case 'network-request-failed':
+        return 'Network error. Check your internet connection.';
+      case 'operation-not-allowed':
+        return 'Sign-in method not enabled. Contact support.';
       default:
-        return 'An error occurred. Please try again.';
+        return 'An error occurred ($code). Please try again.';
     }
   }
 }

@@ -6,7 +6,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import '../theme/app_theme.dart';
 import '../providers/diagnosis_provider.dart';
-import '../providers/auth_provider.dart';
 import '../widgets/common_widgets.dart';
 
 class ViewImageScreen extends StatefulWidget {
@@ -71,8 +70,6 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userName = context.watch<AuthProvider>().userName;
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(

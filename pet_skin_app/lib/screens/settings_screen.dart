@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 import '../providers/auth_provider.dart';
 import '../widgets/common_widgets.dart';
@@ -124,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               title: 'Push Notifications',
               trailing: Switch(
                 value: _notificationsEnabled,
-                activeColor: AppColors.primary,
+                activeThumbColor: AppColors.primary,
                 onChanged: (val) => setState(() => _notificationsEnabled = val),
               ),
             ),
@@ -150,7 +151,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildSettingsTile(
               icon: Icons.privacy_tip_outlined,
               title: 'Privacy Policy',
-              onTap: () {}, // TODO: Open URL
+              onTap: () async {
+                final uri = Uri.parse(
+                    'https://www.example.com/privacy-policy');
+                if (await canLaunchUrl(uri)) {
+                  await launchUrl(uri,
+                      mode: LaunchMode.externalApplication);
+                }
+              },
             ),
             _buildSettingsTile(
               icon: Icons.info_outline_rounded,

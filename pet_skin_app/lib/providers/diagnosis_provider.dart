@@ -5,7 +5,6 @@ import '../models/disease_result.dart';
 import '../data/disease_data.dart';
 import '../services/api_service.dart';
 import '../services/firestore_service.dart';
-import '../services/storage_service.dart';
 
 class DiagnosisProvider extends ChangeNotifier {
   String _selectedPet = 'Dog';
@@ -21,6 +20,14 @@ class DiagnosisProvider extends ChangeNotifier {
   String? get errorMessage => _errorMessage;
   String? get primaryImagePath =>
       _imagePaths.isNotEmpty ? _imagePaths.first : null;
+
+  String? _saveError;
+  bool _isSaving = false;
+  bool _saveSuccess = false;
+
+  String? get saveError => _saveError;
+  bool get isSaving => _isSaving;
+  bool get saveSuccess => _saveSuccess;
 
   void selectPet(String pet) {
     _selectedPet = pet;
@@ -62,6 +69,9 @@ class DiagnosisProvider extends ChangeNotifier {
   ///   3. Saves the full scan record to Firestore
   Future<void> runDiagnosis() async {
     _errorMessage = null;
+    _saveError = null;
+    _isSaving = false;
+    _saveSuccess = false;
 
     // ── Step 1: Get prediction from FastAPI ──────────────────────────────────
     if (_imagePaths.isNotEmpty) {
@@ -97,19 +107,23 @@ class DiagnosisProvider extends ChangeNotifier {
   /// record to Firestore. Runs after the result is already shown to the user.
   Future<void> _saveToFirebase() async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
-    if (uid == null || _result == null) return;
+    if (uid == null || _result == null) {
+      _saveError = 'User not logged in or no result generated.';
+      notifyListeners();
+      return;
+    }
 
+    _isSaving = true;
+    _saveError = null;
+    _saveSuccess = false;
+    notifyListeners();
+
+    // ── Step 1: Image upload skipped (Firebase Storage requires Blaze plan) ──
+    // Scans are saved to Firestore without an image URL.
+    const String imageUrl = '';
+
+    // ── Step 2: Always save the scan record to Firestore ─────────────────────
     try {
-      // Upload photo (if one was selected)
-      String imageUrl = '';
-      if (_imagePaths.isNotEmpty) {
-        imageUrl = await StorageService.uploadDogPhoto(
-          uid: uid,
-          localImagePath: _imagePaths.first,
-        );
-      }
-
-      // Save full scan record to Firestore
       await FirestoreService.saveScan(
         uid: uid,
         petType: _selectedPet,
@@ -130,10 +144,16 @@ class DiagnosisProvider extends ChangeNotifier {
           'q6': _answers.q6Behavior ?? 'A',
         },
       );
+      _isSaving = false;
+      _saveSuccess = true;
       debugPrint('✅ Scan saved to Firestore successfully.');
+      notifyListeners();
     } catch (e) {
-      // Non-critical — don't disrupt the user experience
-      debugPrint('⚠ Failed to save scan to Firebase: $e');
+      _isSaving = false;
+      _saveSuccess = false;
+      _saveError = e.toString();
+      debugPrint('⚠ Failed to save scan to Firestore: $e');
+      notifyListeners();
     }
   }
 
@@ -142,6 +162,9 @@ class DiagnosisProvider extends ChangeNotifier {
     _result = null;
     _imagePaths = [];
     _errorMessage = null;
+    _saveError = null;
+    _isSaving = false;
+    _saveSuccess = false;
     notifyListeners();
   }
 }

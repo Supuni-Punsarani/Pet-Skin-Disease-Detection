@@ -10,7 +10,8 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final result = context.read<DiagnosisProvider>().result;
+    final dp = context.watch<DiagnosisProvider>();
+    final result = dp.result;
 
     if (result == null) {
       return const AppScaffold(
@@ -32,7 +33,80 @@ class ResultScreen extends StatelessWidget {
                 .animate()
                 .fadeIn(duration: 500.ms)
                 .slideX(begin: -0.2, end: 0),
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
+
+            // Save to History status banner
+            if (dp.isSaving)
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.blue.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.blue.shade200),
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(
+                      width: 16,
+                      height: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.primary),
+                    ),
+                    const SizedBox(width: 12),
+                    Text(
+                      'Saving scan to your history...',
+                      style: TextStyle(color: Colors.blue.shade900, fontSize: 13, fontWeight: FontWeight.w500),
+                    ),
+                  ],
+                ),
+              ),
+            if (dp.saveError != null)
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.red.shade200),
+                ),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Icon(Icons.error_outline_rounded, color: Colors.red, size: 18),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Failed to save to history: ${dp.saveError}',
+                        style: TextStyle(color: Colors.red.shade900, fontSize: 13),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            if (dp.saveSuccess)
+              Container(
+                margin: const EdgeInsets.only(bottom: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                decoration: BoxDecoration(
+                  color: Colors.green.shade50,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.green.shade200),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.check_circle_outline_rounded, color: Colors.green, size: 18),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        'Scan saved to history successfully! ✅',
+                        style: TextStyle(color: Colors.green.shade900, fontSize: 13, fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+            const SizedBox(height: 8),
 
             // Result Card
             Container(
@@ -279,7 +353,7 @@ class _TreatmentCard extends StatelessWidget {
         border: Border.all(color: AppColors.decorativeCircle),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.06),
+            color: AppColors.primary.withValues(alpha: 0.06),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
