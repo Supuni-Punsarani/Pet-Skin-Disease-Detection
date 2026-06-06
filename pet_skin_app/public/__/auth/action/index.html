@@ -60,6 +60,16 @@
       margin-bottom: 15px;
     }
 
+    .spin-animation {
+      display: inline-block;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     h2 {
       margin: 0 0 10px 0;
       color: #1a1a2e;
@@ -171,8 +181,23 @@
   <div class="circle-bottom"></div>
 
   <div class="container">
-    <!-- Form State -->
-    <div id="reset-form-state">
+    <!-- Redirecting State (Default on Load) -->
+    <div id="redirect-state">
+      <div class="header-logo"><span class="spin-animation">🔄</span></div>
+      <h2>Opening PetDerm AI</h2>
+      <p class="subtitle">We are redirecting you to the mobile app to securely reset your password.</p>
+      
+      <button class="btn" onclick="redirectToAppResetPassword()">Open App</button>
+      
+      <p style="font-size: 13px; margin-top: 25px;">
+        <a href="#" onclick="showWebForm(event)" style="color: #6c63ff; text-decoration: underline; font-weight: 600;">
+          Reset password in browser instead
+        </a>
+      </p>
+    </div>
+
+    <!-- Form State (Hidden initially) -->
+    <div id="reset-form-state" style="display: none;">
       <div class="header-logo">🐾</div>
       <h2>New Password</h2>
       <p class="subtitle">Please enter your new password below to update your account.</p>
@@ -214,16 +239,25 @@
     const oobCode = urlParams.get('oobCode');
     const apiKey = urlParams.get('apiKey');
 
-    // Basic parameters validation
-    if (mode !== 'resetPassword' || !oobCode || !apiKey) {
+    // Automatically attempt redirect on load
+    if (mode === 'resetPassword' && oobCode && apiKey) {
+      setTimeout(() => {
+        redirectToAppResetPassword();
+      }, 600);
+    } else {
+      // If invalid parameters, show web form error state
+      showWebForm();
       showError("Invalid or expired password reset link. Please request a new link from the app.");
       document.getElementById('reset-form').style.display = 'none';
     }
 
-    function showError(message) {
-      const banner = document.getElementById('error-banner');
-      banner.textContent = message;
-      banner.style.display = 'block';
+    function redirectToAppResetPassword() {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        window.location.href = `intent://resetPassword?oobCode=${oobCode}#Intent;scheme=petderm;package=com.petcare.pet_skin_app;end`;
+      } else {
+        window.location.href = `petderm:///resetPassword?oobCode=${oobCode}`;
+      }
     }
 
     function redirectToApp() {
@@ -233,6 +267,18 @@
       } else {
         window.location.href = "petderm:///signin";
       }
+    }
+
+    function showWebForm(event) {
+      if (event) event.preventDefault();
+      document.getElementById('redirect-state').style.display = 'none';
+      document.getElementById('reset-form-state').style.display = 'block';
+    }
+
+    function showError(message) {
+      const banner = document.getElementById('error-banner');
+      banner.textContent = message;
+      banner.style.display = 'block';
     }
 
     async function handleReset(event) {

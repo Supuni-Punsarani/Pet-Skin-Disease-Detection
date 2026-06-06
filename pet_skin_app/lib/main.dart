@@ -22,6 +22,7 @@ import 'screens/treatment_screen.dart';
 import 'screens/settings_screen.dart';
 import 'screens/vet_location_screen.dart';
 import 'screens/history_screen.dart';
+import 'screens/reset_password_confirm_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,24 +54,78 @@ class PetSkinApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
       initialRoute: '/',
-      routes: {
-        '/': (context) => const SplashScreen(),
-        '/signin': (context) => const SignInScreen(),
-        '/signup': (context) => const SignUpScreen(),
-        '/forgot-password': (context) => const ForgotPasswordScreen(),
-        '/home': (context) => const HomeScreen(),
-        '/select-pet': (context) => const SelectPetScreen(),
-        '/upload-image': (context) => const UploadImageScreen(),
-        '/view-image': (context) => const ViewImageScreen(),
-        '/question1': (context) => const SymptomQuestion1Screen(),
-        '/question2': (context) => const SymptomQuestion2Screen(),
-        '/question3': (context) => const SymptomQuestion3Screen(),
-        '/processing': (context) => const AiProcessingScreen(),
-        '/result': (context) => const ResultScreen(),
-        '/treatment': (context) => const TreatmentScreen(),
-        '/vet': (context) => const VetLocationScreen(),
-        '/history': (context) => const HistoryScreen(),
-        '/settings': (context) => const SettingsScreen(),
+      onGenerateRoute: (settings) {
+        final uri = Uri.parse(settings.name ?? '/');
+        
+        if (uri.path == '/resetPassword') {
+          final oobCode = uri.queryParameters['oobCode'] ?? '';
+          return MaterialPageRoute(
+            builder: (context) => ResetPasswordConfirmScreen(oobCode: oobCode),
+            settings: settings,
+          );
+        }
+        
+        Widget builder;
+        switch (uri.path) {
+          case '/':
+            builder = const SplashScreen();
+            break;
+          case '/signin':
+            builder = const SignInScreen();
+            break;
+          case '/signup':
+            builder = const SignUpScreen();
+            break;
+          case '/forgot-password':
+            builder = const ForgotPasswordScreen();
+            break;
+          case '/home':
+            builder = const HomeScreen();
+            break;
+          case '/select-pet':
+            builder = const SelectPetScreen();
+            break;
+          case '/upload-image':
+            builder = const UploadImageScreen();
+            break;
+          case '/view-image':
+            builder = const ViewImageScreen();
+            break;
+          case '/question1':
+            builder = const SymptomQuestion1Screen();
+            break;
+          case '/question2':
+            builder = const SymptomQuestion2Screen();
+            break;
+          case '/question3':
+            builder = const SymptomQuestion3Screen();
+            break;
+          case '/processing':
+            builder = const AiProcessingScreen();
+            break;
+          case '/result':
+            builder = const ResultScreen();
+            break;
+          case '/treatment':
+            builder = const TreatmentScreen();
+            break;
+          case '/vet':
+            builder = const VetLocationScreen();
+            break;
+          case '/history':
+            builder = const HistoryScreen();
+            break;
+          case '/settings':
+            builder = const SettingsScreen();
+            break;
+          default:
+            builder = const SplashScreen();
+        }
+        
+        return MaterialPageRoute(
+          builder: (context) => builder,
+          settings: settings,
+        );
       },
     );
   }
