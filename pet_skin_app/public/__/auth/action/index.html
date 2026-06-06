@@ -199,9 +199,7 @@
       <p class="success-text">Your password has been successfully updated. You can now return to the app and sign in.</p>
       
       <!-- Direct Deeplink Button -->
-      <a href="petderm:///signin" style="text-decoration: none;">
-        <button class="btn">Back to Sign In</button>
-      </a>
+      <button class="btn" onclick="redirectToApp()">Back to Sign In</button>
       
       <p style="font-size: 12px; color: #9ca3af; margin-top: 15px;">
         If you are not redirected automatically, you can safely close this page and open the <strong>PetDerm AI</strong> app manually.
@@ -226,6 +224,15 @@
       const banner = document.getElementById('error-banner');
       banner.textContent = message;
       banner.style.display = 'block';
+    }
+
+    function redirectToApp() {
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      if (isAndroid) {
+        window.location.href = "intent://signin#Intent;scheme=petderm;package=com.petcare.pet_skin_app;end";
+      } else {
+        window.location.href = "petderm:///signin";
+      }
     }
 
     async function handleReset(event) {
@@ -265,9 +272,9 @@
           document.getElementById('reset-form-state').style.display = 'none';
           document.getElementById('success-state').style.display = 'block';
           
-          // Attempt an automatic redirect to the app using custom scheme after 2 seconds
+          // Attempt an automatic redirect to the app after 2 seconds
           setTimeout(() => {
-            window.location.href = "petderm:///signin";
+            redirectToApp();
           }, 2000);
         } else {
           const errorMsg = data.error && data.error.message ? data.error.message : "Failed to update password.";
