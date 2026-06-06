@@ -199,7 +199,7 @@
       <p class="success-text">Your password has been successfully updated. You can now return to the app and sign in.</p>
       
       <!-- Direct Deeplink Button -->
-      <a href="petderm://signin" style="text-decoration: none;">
+      <a href="petderm:///signin" style="text-decoration: none;">
         <button class="btn">Back to Sign In</button>
       </a>
       
@@ -267,7 +267,7 @@
           
           // Attempt an automatic redirect to the app using custom scheme after 2 seconds
           setTimeout(() => {
-            window.location.href = "petderm://signin";
+            window.location.href = "petderm:///signin";
           }, 2000);
         } else {
           const errorMsg = data.error && data.error.message ? data.error.message : "Failed to update password.";
