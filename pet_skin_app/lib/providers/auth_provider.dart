@@ -218,7 +218,16 @@ class AuthProvider extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      await _auth.sendPasswordResetEmail(email: email.trim());
+      // continueUrl = page shown AFTER Firebase resets the password successfully.
+      // Firebase appends this as a "Continue" button on its default reset page.
+      final actionCodeSettings = ActionCodeSettings(
+        url: 'https://petderm-ai.web.app/reset-success',
+        handleCodeInApp: false, // Firebase handles it in browser, then continues to our URL
+      );
+      await _auth.sendPasswordResetEmail(
+        email: email.trim(),
+        actionCodeSettings: actionCodeSettings,
+      );
       _isLoading = false;
       notifyListeners();
       return true;
