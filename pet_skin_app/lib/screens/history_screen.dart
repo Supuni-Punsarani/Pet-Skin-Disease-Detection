@@ -355,7 +355,6 @@ class _ScanDetailSheet extends StatelessWidget {
 class _EmptyHistory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -367,88 +366,6 @@ class _EmptyHistory extends StatelessWidget {
           Text('Complete your first diagnosis to see history here.',
               style: AppTextStyles.body.copyWith(color: AppColors.textMedium),
               textAlign: TextAlign.center),
-          const SizedBox(height: 24),
-          
-          // Debug section
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 24),
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.grey.shade300),
-            ),
-            child: Column(
-              children: [
-                const Text(
-                  '🛠 History Debugger',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  'UID: ${user?.uid ?? "Not logged in (null)"}',
-                  style: const TextStyle(fontSize: 11, fontFamily: 'monospace'),
-                ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: user == null ? null : () async {
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (_) => const Center(child: CircularProgressIndicator()),
-                    );
-                    try {
-                      final docId = await FirestoreService.saveScan(
-                        uid: user.uid,
-                        petType: 'Dog',
-                        imageUrl: '',
-                        diagnosis: 'Bacterial Dermatosis (Debug Test)',
-                        confidence: 0.99,
-                        severity: 'Moderate',
-                        urgency: 'See vet within 3 days',
-                        description: 'This is a test scan to verify Firestore writes.',
-                        treatments: ['Test Treatment 1'],
-                        matchedSymptoms: ['Test Symptom'],
-                        answers: {'q1': 'A'},
-                      );
-                      if (!context.mounted) return;
-                      Navigator.pop(context); // close loading dialog
-                      showDialog(
-                        context: context,
-                        builder: (c) => AlertDialog(
-                          title: const Text('✅ Success'),
-                          content: Text('Test scan written successfully!\nDocument ID: $docId'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(c),
-                              child: const Text('OK'),
-                            )
-                          ],
-                        ),
-                      );
-                    } catch (e) {
-                      if (!context.mounted) return;
-                      Navigator.pop(context); // close loading dialog
-                      showDialog(
-                        context: context,
-                        builder: (c) => AlertDialog(
-                          title: const Text('❌ Write Failed'),
-                          content: Text('Error writing to Firestore:\n$e'),
-                          actions: [
-                            TextButton(
-                              onPressed: () => Navigator.pop(c),
-                              child: const Text('OK'),
-                            )
-                          ],
-                        ),
-                      );
-                    }
-                  },
-                  child: const Text('Test Write to Firestore', style: TextStyle(fontSize: 12)),
-                ),
-              ],
-            ),
-          ),
         ],
       ),
     );
