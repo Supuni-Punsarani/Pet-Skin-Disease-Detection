@@ -125,7 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               letterSpacing: 1.0,
                             ),
                           ),
-                          SizedBox(height: 4),
+                          const SizedBox(height: 4),
                           Text(
                             'Fill in the details below to get started',
                             style: TextStyle(

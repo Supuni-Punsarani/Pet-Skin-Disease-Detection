@@ -148,7 +148,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   Text('English',
                       style: TextStyle(color: AppColors.textMedium)),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Icon(Icons.chevron_right_rounded,
                       color: AppColors.textMedium),
                 ],

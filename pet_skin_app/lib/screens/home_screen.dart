@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('PetDerm AI',
+              const Text('PetDerm AI',
                   style: TextStyle(
                       fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.primary)),
               Text('Pet Skin Disease Detection', style: AppTextStyles.caption),

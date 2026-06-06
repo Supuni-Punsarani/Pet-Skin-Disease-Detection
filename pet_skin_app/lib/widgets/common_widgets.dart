@@ -119,7 +119,7 @@ class ProfileAvatar extends StatelessWidget {
       child: CircleAvatar(
         radius: 18,
         backgroundColor: AppColors.decorativeCircle,
-        child: Icon(Icons.person, size: 20, color: AppColors.primary),
+        child: const Icon(Icons.person, size: 20, color: AppColors.primary),
       ),
     );
   }

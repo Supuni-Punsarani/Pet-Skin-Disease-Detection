@@ -33,7 +33,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.fromLTRB(22, 10, 22, 16),
+            padding: const EdgeInsets.fromLTRB(22, 10, 22, 16),
             child: Text('Scan History', style: AppTextStyles.heading1),
           ),
           Padding(
@@ -226,7 +226,7 @@ class _ScanCard extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(right: 12),
+              padding: const EdgeInsets.only(right: 12),
               child: Icon(Icons.chevron_right_rounded,
                   color: AppColors.textMedium),
             ),
