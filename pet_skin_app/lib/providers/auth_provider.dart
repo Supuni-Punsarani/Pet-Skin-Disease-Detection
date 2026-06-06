@@ -214,10 +214,23 @@ class AuthProvider extends ChangeNotifier {
 
   // ─── Password Reset ──────────────────────────────────────────────────────────
   Future<bool> sendPasswordReset(String email) async {
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
     try {
       await _auth.sendPasswordResetEmail(email: email.trim());
+      _isLoading = false;
+      notifyListeners();
       return true;
-    } on FirebaseAuthException {
+    } on FirebaseAuthException catch (e) {
+      _isLoading = false;
+      _errorMessage = _mapAuthError(e.code);
+      notifyListeners();
+      return false;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = 'Failed to send reset email. Check your internet connection.';
+      notifyListeners();
       return false;
     }
   }
