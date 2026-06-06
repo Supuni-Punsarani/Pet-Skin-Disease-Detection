@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:app_links/app_links.dart';
 import 'theme/app_theme.dart';
 import 'providers/diagnosis_provider.dart';
 import 'providers/auth_provider.dart';
@@ -24,6 +25,9 @@ import 'screens/vet_location_screen.dart';
 import 'screens/history_screen.dart';
 import 'screens/reset_password_confirm_screen.dart';
 
+/// Global navigator key so deep-link handler can push routes without context.
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -44,8 +48,56 @@ void main() async {
   );
 }
 
-class PetSkinApp extends StatelessWidget {
+class PetSkinApp extends StatefulWidget {
   const PetSkinApp({super.key});
+
+  @override
+  State<PetSkinApp> createState() => _PetSkinAppState();
+}
+
+class _PetSkinAppState extends State<PetSkinApp> {
+  late final AppLinks _appLinks;
+
+  @override
+  void initState() {
+    super.initState();
+    _initDeepLinks();
+  }
+
+  Future<void> _initDeepLinks() async {
+    _appLinks = AppLinks();
+
+    // Handle the link that launched the app (cold start)
+    try {
+      final initialLink = await _appLinks.getInitialLink();
+      if (initialLink != null) {
+        _handleDeepLink(initialLink);
+      }
+    } catch (_) {}
+
+    // Handle links while the app is already running (warm start)
+    _appLinks.uriLinkStream.listen((uri) {
+      _handleDeepLink(uri);
+    });
+  }
+
+  /// Routes an incoming deep-link URI to the correct screen.
+  ///
+  /// Firebase password reset links look like:
+  ///   petderm://resetPassword?oobCode=XXXX&mode=resetPassword
+  void _handleDeepLink(Uri uri) {
+    final mode = uri.queryParameters['mode'];
+    final oobCode = uri.queryParameters['oobCode'] ?? '';
+
+    if (mode == 'resetPassword' && oobCode.isNotEmpty) {
+      navigatorKey.currentState?.pushAndRemoveUntil(
+        MaterialPageRoute(
+          builder: (_) => ResetPasswordConfirmScreen(oobCode: oobCode),
+        ),
+        (route) => false,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,10 +105,11 @@ class PetSkinApp extends StatelessWidget {
       title: 'PetDerm AI',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      navigatorKey: navigatorKey,
       initialRoute: '/',
       onGenerateRoute: (settings) {
         final uri = Uri.parse(settings.name ?? '/');
-        
+
         if (uri.path == '/resetPassword') {
           final oobCode = uri.queryParameters['oobCode'] ?? '';
           return MaterialPageRoute(
@@ -64,7 +117,7 @@ class PetSkinApp extends StatelessWidget {
             settings: settings,
           );
         }
-        
+
         Widget builder;
         switch (uri.path) {
           case '/':
@@ -121,7 +174,7 @@ class PetSkinApp extends StatelessWidget {
           default:
             builder = const SplashScreen();
         }
-        
+
         return MaterialPageRoute(
           builder: (context) => builder,
           settings: settings,
