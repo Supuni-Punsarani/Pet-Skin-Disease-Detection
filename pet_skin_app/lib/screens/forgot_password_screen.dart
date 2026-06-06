@@ -294,9 +294,13 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       fontSize: 14,
                                       color: AppColors.textDark,
                                     ),
-                                    validator: (v) => v == null || !v.contains('@')
-                                        ? 'Valid email required'
-                                        : null,
+                                    validator: (v) {
+                                      if (v == null || v.trim().isEmpty) return 'Email is required';
+                                      if (!RegExp(r'^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$').hasMatch(v.trim())) {
+                                        return 'Enter a valid email (e.g. name@email.com)';
+                                      }
+                                      return null;
+                                    },
                                     decoration: InputDecoration(
                                       hintText: 'Enter your email address',
                                       hintStyle: TextStyle(

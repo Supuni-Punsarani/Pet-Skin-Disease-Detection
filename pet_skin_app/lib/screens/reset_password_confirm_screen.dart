@@ -28,15 +28,6 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
 
   Future<void> _resetPassword() async {
     if (!_formKey.currentState!.validate()) return;
-    if (_passwordCtrl.text != _confirmPasswordCtrl.text) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Passwords do not match'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
 
     setState(() => _isLoading = true);
 
@@ -215,9 +206,13 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                               fontSize: 14,
                               color: AppColors.textDark,
                             ),
-                            validator: (v) => v == null || v.length < 6
-                                ? 'Password must be at least 6 characters'
-                                : null,
+                            validator: (v) {
+                              if (v == null || v.isEmpty) return 'Password is required';
+                              if (v.length < 6) return 'Password must be at least 6 characters';
+                              if (!RegExp(r'[A-Za-z]').hasMatch(v)) return 'Password must contain at least one letter';
+                              if (!RegExp(r'[0-9]').hasMatch(v)) return 'Password must contain at least one number';
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: 'Enter new password',
                               hintStyle: TextStyle(
@@ -281,9 +276,11 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                               fontSize: 14,
                               color: AppColors.textDark,
                             ),
-                            validator: (v) => v == null || v.length < 6
-                                ? 'Password must be at least 6 characters'
-                                : null,
+                            validator: (v) {
+                              if (v == null || v.isEmpty) return 'Confirm password is required';
+                              if (v != _passwordCtrl.text) return 'Passwords do not match';
+                              return null;
+                            },
                             decoration: InputDecoration(
                               hintText: 'Re-enter new password',
                               hintStyle: TextStyle(

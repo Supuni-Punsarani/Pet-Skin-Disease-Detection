@@ -146,8 +146,13 @@ class _SignInScreenState extends State<SignInScreen> {
                       label: 'Email',
                       icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (v) =>
-                          v == null || !v.contains('@') ? 'Valid email required' : null,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Email is required';
+                        if (!RegExp(r'^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$').hasMatch(v.trim())) {
+                          return 'Enter a valid email (e.g. name@email.com)';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 14),
 
@@ -156,8 +161,11 @@ class _SignInScreenState extends State<SignInScreen> {
                       controller: _passwordCtrl,
                       obscureText: _obscurePassword,
                       style: const TextStyle(fontSize: 14, color: AppColors.textDark),
-                      validator: (v) =>
-                          v == null || v.length < 6 ? 'Minimum 6 characters' : null,
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return 'Password is required';
+                        if (v.length < 6) return 'Password must be at least 6 characters';
+                        return null;
+                      },
                       decoration: _inputDeco(
                         'Password',
                         Icons.lock_outline,

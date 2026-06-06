@@ -145,7 +145,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _petNameCtrl,
                       label: 'Pet Name',
                       icon: Icons.pets,
-                      validator: (v) => v == null || v.isEmpty ? 'Pet name required' : null,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Pet name is required';
+                        if (v.trim().length < 2) return 'Pet name must be at least 2 characters';
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 12),
 
@@ -153,7 +157,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       controller: _petBreedCtrl,
                       label: 'Breed (e.g., Golden Retriever)',
                       icon: Icons.category_outlined,
-                      validator: (v) => v == null || v.isEmpty ? 'Breed required' : null,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Breed is required';
+                        if (v.trim().length < 2) return 'Please enter a valid breed';
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 12),
 
@@ -165,7 +173,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             label: 'Age (Years)',
                             icon: Icons.cake_outlined,
                             keyboardType: TextInputType.number,
-                            validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                            validator: (v) {
+                              if (v == null || v.trim().isEmpty) return 'Age is required';
+                              final age = int.tryParse(v.trim());
+                              if (age == null || age < 0) return 'Enter a valid age';
+                              if (age > 50) return 'Age seems too high';
+                              return null;
+                            },
                           ),
                         ),
                         const SizedBox(width: 12),
@@ -175,7 +189,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             label: 'Weight (kg)',
                             icon: Icons.monitor_weight_outlined,
                             keyboardType: const TextInputType.numberWithOptions(decimal: true),
-                            validator: (v) => v == null || v.isEmpty ? 'Required' : null,
+                            validator: (v) {
+                              if (v == null || v.trim().isEmpty) return 'Weight is required';
+                              final w = double.tryParse(v.trim());
+                              if (w == null || w <= 0) return 'Enter a valid weight';
+                              if (w > 200) return 'Weight seems too high';
+                              return null;
+                            },
                           ),
                         ),
                       ],
@@ -191,10 +211,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     _buildField(
                       controller: _nameCtrl,
-                      label: 'Name',
+                      label: 'Full Name',
                       icon: Icons.person_outline,
-                      validator: (v) =>
-                          v == null || v.isEmpty ? 'Name is required' : null,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Name is required';
+                        if (v.trim().length < 2) return 'Name must be at least 2 characters';
+                        if (!RegExp(r"^[a-zA-Z\s]+$").hasMatch(v.trim())) return 'Name must contain letters only';
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 12),
 
@@ -202,23 +226,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     _buildField(
                       controller: _phoneCtrl,
-                      label: 'Phone',
+                      label: 'Phone Number',
                       icon: Icons.phone_outlined,
                       keyboardType: TextInputType.phone,
-                      validator: (v) =>
-                          v == null || v.isEmpty ? 'Phone is required' : null,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Phone number is required';
+                        final digits = v.trim().replaceAll(RegExp(r'[\s\-\+\(\)]'), '');
+                        if (!RegExp(r'^[0-9]+$').hasMatch(digits)) return 'Phone must contain numbers only';
+                        if (digits.length < 7 || digits.length > 15) return 'Enter a valid phone number';
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 12),
 
                     _buildField(
                       controller: _emailCtrl,
-                      label: 'Email',
+                      label: 'Email Address',
                       icon: Icons.email_outlined,
                       keyboardType: TextInputType.emailAddress,
-                      validator: (v) =>
-                          v == null || !v.contains('@')
-                              ? 'Valid email required'
-                              : null,
+                      validator: (v) {
+                        if (v == null || v.trim().isEmpty) return 'Email is required';
+                        if (!RegExp(r'^[\w\.-]+@[\w\.-]+\.[a-zA-Z]{2,}$').hasMatch(v.trim())) {
+                          return 'Enter a valid email (e.g. name@email.com)';
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 12),
 
@@ -227,8 +259,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       obscureText: _obscurePassword,
                       style: const TextStyle(
                           fontSize: 14, color: AppColors.textDark),
-                      validator: (v) =>
-                          v == null || v.length < 6 ? 'Minimum 6 characters' : null,
+                      validator: (v) {
+                        if (v == null || v.isEmpty) return 'Password is required';
+                        if (v.length < 6) return 'Password must be at least 6 characters';
+                        if (!RegExp(r'[A-Za-z]').hasMatch(v)) return 'Password must contain at least one letter';
+                        if (!RegExp(r'[0-9]').hasMatch(v)) return 'Password must contain at least one number';
+                        return null;
+                      },
                       decoration: _inputDeco(
                         'Password',
                         Icons.lock_outline,
