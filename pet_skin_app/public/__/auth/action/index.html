@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password - PetDerm AI</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f6ff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #1a1a2e;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Background Circles */
+    .circle-top {
+      position: absolute;
+      top: -100px;
+      left: -100px;
+      width: 300px;
+      height: 300px;
+      background-color: rgba(108, 99, 255, 0.08);
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .circle-bottom {
+      position: absolute;
+      bottom: -80px;
+      right: -80px;
+      width: 280px;
+      height: 280px;
+      background-color: #ede9ff;
+      border-radius: 50%;
+      z-index: 1;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 40px 30px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(108, 99, 255, 0.06);
+      border: 1px solid rgba(108, 99, 255, 0.08);
+      width: 100%;
+      max-width: 400px;
+      box-sizing: border-box;
+      z-index: 10;
+      text-align: center;
+    }
+
+    .header-logo {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      margin: 0 0 10px 0;
+      color: #1a1a2e;
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    p.subtitle {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.5;
+      margin: 0 0 30px 0;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1a1a2e;
+    }
+
+    input {
+      width: 100%;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1px solid #ede9ff;
+      background-color: #f5f3ff;
+      font-size: 14px;
+      color: #1a1a2e;
+      box-sizing: border-box;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input:focus {
+      border-color: #6c63ff;
+      background-color: #ffffff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border-radius: 16px;
+      background-color: #6c63ff;
+      color: #ffffff;
+      border: none;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(108, 99, 255, 0.25);
+      transition: background-color 0.2s, transform 0.1s;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      background-color: #5b52e6;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .error-msg {
+      background-color: #ffebee;
+      color: #c62828;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      text-align: left;
+      display: none;
+      border: 1px solid #ffcdd2;
+    }
+
+    .success-container {
+      display: none;
+    }
+
+    .success-icon {
+      color: #2eb67d;
+      font-size: 54px;
+      margin-bottom: 20px;
+    }
+
+    .success-title {
+      color: #2eb67d;
+      font-weight: 800;
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+
+    .success-text {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="circle-top"></div>
+  <div class="circle-bottom"></div>
+
+  <div class="container">
+    <!-- Form State -->
+    <div id="reset-form-state">
+      <div class="header-logo">🐾</div>
+      <h2>New Password</h2>
+      <p class="subtitle">Please enter your new password below to update your account.</p>
+
+      <div id="error-banner" class="error-msg"></div>
+
+      <form id="reset-form" onsubmit="handleReset(event)">
+        <div class="form-group">
+          <label for="new-password">New Password</label>
+          <input type="password" id="new-password" placeholder="At least 6 characters" required minlength="6">
+        </div>
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <input type="password" id="confirm-password" placeholder="Re-enter your password" required minlength="6">
+        </div>
+        <button type="submit" class="btn" id="submit-btn">Update Password</button>
+      </form>
+    </div>
+
+    <!-- Success State -->
+    <div id="success-state" class="success-container">
+      <div class="success-icon">✓</div>
+      <div class="success-title">Password Changed</div>
+      <p class="success-text">Your password has been successfully updated. You can now return to the app and sign in.</p>
+      
+      <!-- Direct Deeplink Button -->
+      <a href="petderm://signin" style="text-decoration: none;">
+        <button class="btn">Back to Sign In</button>
+      </a>
+      
+      <p style="font-size: 12px; color: #9ca3af; margin-top: 15px;">
+        If you are not redirected automatically, you can safely close this page and open the <strong>PetDerm AI</strong> app manually.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    // Parse query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const mode = urlParams.get('mode');
+    const oobCode = urlParams.get('oobCode');
+    const apiKey = urlParams.get('apiKey');
+
+    // Basic parameters validation
+    if (mode !== 'resetPassword' || !oobCode || !apiKey) {
+      showError("Invalid or expired password reset link. Please request a new link from the app.");
+      document.getElementById('reset-form').style.display = 'none';
+    }
+
+    function showError(message) {
+      const banner = document.getElementById('error-banner');
+      banner.textContent = message;
+      banner.style.display = 'block';
+    }
+
+    async function handleReset(event) {
+      event.preventDefault();
+      
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const submitBtn = document.getElementById('submit-btn');
+
+      // Clear previous error
+      document.getElementById('error-banner').style.display = 'none';
+
+      if (newPassword !== confirmPassword) {
+        showError("Passwords do not match. Please re-enter confirmation.");
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Updating...";
+
+      try {
+        const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            oobCode: oobCode,
+            newPassword: newPassword
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Hide form, show success screen
+          document.getElementById('reset-form-state').style.display = 'none';
+          document.getElementById('success-state').style.display = 'block';
+          
+          // Attempt an automatic redirect to the app using custom scheme after 2 seconds
+          setTimeout(() => {
+            window.location.href = "petderm://signin";
+          }, 2000);
+        } else {
+          const errorMsg = data.error && data.error.message ? data.error.message : "Failed to update password.";
+          showError(formatFirebaseError(errorMsg));
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Update Password";
+        }
+      } catch (err) {
+        showError("Network connection error. Please try again.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Update Password";
+      }
+    }
+
+    function formatFirebaseError(message) {
+      switch (message) {
+        case 'EXPIRED_OOB_CODE':
+          return 'The password reset link has expired. Please request a new one.';
+        case 'INVALID_OOB_CODE':
+          return 'This reset link is invalid or has already been used.';
+        case 'USER_DISABLED':
+          return 'This user account has been disabled.';
+        case 'WEAK_PASSWORD':
+          return 'Password must be at least 6 characters long.';
+        default:
+          return 'An error occurred. Please request a new link.';
+      }
+    }
+  </script>
+</body>
+</html>

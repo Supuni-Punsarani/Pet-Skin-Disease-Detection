@@ -273,25 +273,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                       ],
                                     ),
                                   ),
-                                  const SizedBox(height: 24),
-                                  
-                                  // Back to Sign In button
-                                  ElevatedButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    style: ElevatedButton.styleFrom(
-                                      padding: const EdgeInsets.symmetric(vertical: 16),
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(16),
-                                      ),
-                                    ),
-                                    child: const Text(
-                                      'Back to Sign In',
-                                      style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w700,
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               ).animate().fadeIn(duration: 400.ms)
                             : Column(

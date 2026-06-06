@@ -1,1 +1,29 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"petderm-ai","appId":"1:957846675349:android:a1e496b192f747e887a09c","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"petderm-ai","configurations":{"android":"1:957846675349:android:a1e496b192f747e887a09c"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "petderm-ai",
+          "appId": "1:957846675349:android:a1e496b192f747e887a09c",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "petderm-ai",
+          "configurations": {
+            "android": "1:957846675349:android:a1e496b192f747e887a09c"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
