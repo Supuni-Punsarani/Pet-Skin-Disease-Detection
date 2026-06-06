@@ -14,27 +14,22 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _nameCtrl = TextEditingController();
-  final _dobCtrl = TextEditingController();
   final _phoneCtrl = TextEditingController();
   final _emailCtrl = TextEditingController();
   final _passwordCtrl = TextEditingController();
-  
+
   // Pet Fields
   final _petNameCtrl = TextEditingController();
   final _petBreedCtrl = TextEditingController();
   final _petAgeCtrl = TextEditingController();
   final _petWeightCtrl = TextEditingController();
 
-  String? _selectedGender;
   bool _obscurePassword = true;
   final _formKey = GlobalKey<FormState>();
-
-  final List<String> _genders = ['Male', 'Female', 'Other', 'Prefer not to say'];
 
   @override
   void dispose() {
     _nameCtrl.dispose();
-    _dobCtrl.dispose();
     _phoneCtrl.dispose();
     _emailCtrl.dispose();
     _passwordCtrl.dispose();
@@ -53,8 +48,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       email: _emailCtrl.text.trim(),
       password: _passwordCtrl.text,
       phone: _phoneCtrl.text.trim(),
-      dob: _dobCtrl.text.trim(),
-      gender: _selectedGender,
       petName: _petNameCtrl.text.trim(),
       petBreed: _petBreedCtrl.text.trim(),
       petAge: _petAgeCtrl.text.trim(),
@@ -80,24 +73,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
-  Future<void> _pickDob() async {
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: DateTime(2000),
-      firstDate: DateTime(1950),
-      lastDate: DateTime.now(),
-      builder: (ctx, child) => Theme(
-        data: ThemeData.light().copyWith(
-          colorScheme: const ColorScheme.light(primary: AppColors.primary),
-        ),
-        child: child!,
-      ),
-    );
-    if (picked != null) {
-      _dobCtrl.text =
-          '${picked.day.toString().padLeft(2, '0')}/${picked.month.toString().padLeft(2, '0')}/${picked.year}';
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -222,29 +198,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const SizedBox(height: 12),
 
-                    TextFormField(
-                      controller: _dobCtrl,
-                      readOnly: true,
-                      onTap: _pickDob,
-                      style: const TextStyle(
-                          fontSize: 14, color: AppColors.textDark),
-                      decoration:
-                          _inputDeco('Date of Birth', Icons.calendar_today_outlined),
-                    ),
-                    const SizedBox(height: 12),
 
-                    DropdownButtonFormField<String>(
-                      initialValue: _selectedGender,
-                      hint: const Text('Gender',
-                          style: TextStyle(
-                              fontSize: 13, color: AppColors.textMedium)),
-                      decoration: _inputDeco('', Icons.wc_outlined),
-                      items: _genders
-                          .map((g) => DropdownMenuItem(value: g, child: Text(g)))
-                          .toList(),
-                      onChanged: (v) => setState(() => _selectedGender = v),
-                    ),
-                    const SizedBox(height: 12),
 
                     _buildField(
                       controller: _phoneCtrl,
