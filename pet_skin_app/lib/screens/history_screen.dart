@@ -32,7 +32,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
+          Padding(
             padding: EdgeInsets.fromLTRB(22, 10, 22, 16),
             child: Text('Scan History', style: AppTextStyles.heading1),
           ),
@@ -52,7 +52,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         value: _sortOrder,
                         isExpanded: true,
                         icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.primary),
-                        style: const TextStyle(fontSize: 13, color: AppColors.textDark, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 13, color: AppColors.textDark, fontWeight: FontWeight.w600),
                         items: ['Newest', 'Oldest'].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
                         onChanged: (v) => setState(() => _sortOrder = v!),
                       ),
@@ -72,7 +72,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         value: _petFilter,
                         isExpanded: true,
                         icon: const Icon(Icons.keyboard_arrow_down, color: AppColors.primary),
-                        style: const TextStyle(fontSize: 13, color: AppColors.textDark, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontSize: 13, color: AppColors.textDark, fontWeight: FontWeight.w600),
                         items: ['All Pets', 'Dog', 'Cat'].map((s) => DropdownMenuItem(value: s, child: Text(s))).toList(),
                         onChanged: (v) => setState(() => _petFilter = v!),
                       ),
@@ -193,7 +193,7 @@ class _ScanCard extends StatelessWidget {
                         Expanded(
                           child: Text(
                             diagnosis,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               fontWeight: FontWeight.w700,
                               color: AppColors.textDark,
@@ -214,7 +214,7 @@ class _ScanCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       Row(
                         children: [
-                          const Icon(Icons.access_time_rounded,
+                          Icon(Icons.access_time_rounded,
                               size: 12, color: AppColors.textMedium),
                           const SizedBox(width: 4),
                           Text(dateStr, style: AppTextStyles.caption),
@@ -225,7 +225,7 @@ class _ScanCard extends StatelessWidget {
                 ),
               ),
             ),
-            const Padding(
+            Padding(
               padding: EdgeInsets.only(right: 12),
               child: Icon(Icons.chevron_right_rounded,
                   color: AppColors.textMedium),
@@ -294,7 +294,7 @@ class _ScanDetailSheet extends StatelessWidget {
             ]),
             const SizedBox(height: 16),
             if (description.isNotEmpty) ...[
-              const Text('About', style: AppTextStyles.heading2),
+              Text('About', style: AppTextStyles.heading2),
               const SizedBox(height: 8),
               Text(description, style: AppTextStyles.body),
               const SizedBox(height: 16),
@@ -316,7 +316,7 @@ class _ScanDetailSheet extends StatelessWidget {
               const SizedBox(height: 16),
             ],
             if (matched.isNotEmpty) ...[
-              const Text('Matched Symptoms', style: AppTextStyles.heading2),
+              Text('Matched Symptoms', style: AppTextStyles.heading2),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8, runSpacing: 8,
@@ -332,7 +332,7 @@ class _ScanDetailSheet extends StatelessWidget {
               const SizedBox(height: 16),
             ],
             if (treatments.isNotEmpty) ...[
-              const Text('Treatments', style: AppTextStyles.heading2),
+              Text('Treatments', style: AppTextStyles.heading2),
               const SizedBox(height: 8),
               ...treatments.map((t) => Padding(
                 padding: const EdgeInsets.only(bottom: 8),

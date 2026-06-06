@@ -4,6 +4,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../theme/app_theme.dart';
 import '../providers/auth_provider.dart';
+import '../providers/theme_provider.dart';
 import '../widgets/common_widgets.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -19,6 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final auth = context.watch<AuthProvider>();
+    final themeProvider = context.watch<ThemeProvider>();
 
     return Scaffold(
       backgroundColor: AppColors.surface,
@@ -36,7 +38,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               child: const Icon(Icons.monitor_heart_outlined, color: Colors.white, size: 18),
             ),
             const SizedBox(width: 8),
-            const Text('Settings',
+            Text('Settings',
                 style: TextStyle(
                     color: AppColors.textDark,
                     fontSize: 18,
@@ -101,7 +103,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(auth.userName,
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.textDark)),
@@ -130,9 +132,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
             ),
             _buildSettingsTile(
+              icon: Icons.dark_mode_outlined,
+              title: 'Dark Mode',
+              trailing: Switch(
+                value: themeProvider.isDarkMode,
+                activeThumbColor: AppColors.primary,
+                onChanged: (val) => themeProvider.toggleTheme(val),
+              ),
+            ),
+            _buildSettingsTile(
               icon: Icons.language_rounded,
               title: 'App Language',
-              trailing: const Row(
+              trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text('English',
@@ -163,7 +174,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildSettingsTile(
               icon: Icons.info_outline_rounded,
               title: 'About PetDerm AI',
-              trailing: const Text('v1.0.0',
+              trailing: Text('v1.0.0',
                   style: TextStyle(color: AppColors.textMedium)),
             ),
 
@@ -253,10 +264,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Icon(icon, color: AppColors.primary, size: 20),
         ),
         title: Text(title,
-            style: const TextStyle(
+            style: TextStyle(
                 fontWeight: FontWeight.w600, color: AppColors.textDark)),
         trailing: trailing ??
-            const Icon(Icons.chevron_right_rounded,
+            Icon(Icons.chevron_right_rounded,
                 color: AppColors.textMedium),
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),

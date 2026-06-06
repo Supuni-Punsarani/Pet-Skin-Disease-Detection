@@ -66,7 +66,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
             child: Container(
               width: 280,
               height: 280,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.decorativeCircle,
                 shape: BoxShape.circle,
               ),
@@ -114,7 +114,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           Container(
                             width: 85,
                             height: 85,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: AppColors.decorativeCircle,
                               shape: BoxShape.circle,
                             ),
@@ -133,7 +133,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     Center(
                       child: Text(
                         _sent ? 'Check Your Email' : 'Reset Password',
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontSize: 26,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textDark,
@@ -278,7 +278,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                             : Column(
                                 crossAxisAlignment: CrossAxisAlignment.stretch,
                                 children: [
-                                  const Text(
+                                  Text(
                                     'Email Address',
                                     style: TextStyle(
                                       fontSize: 14,
@@ -290,7 +290,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                   TextFormField(
                                     controller: _emailCtrl,
                                     keyboardType: TextInputType.emailAddress,
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 14,
                                       color: AppColors.textDark,
                                     ),

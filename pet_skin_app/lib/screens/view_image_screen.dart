@@ -138,7 +138,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           'View Image',
                           style: TextStyle(
                             fontSize: 20,
@@ -186,7 +186,7 @@ class _ViewImageScreenState extends State<ViewImageScreen> {
                                       fit: BoxFit.cover,
                                     );
                                   } else {
-                                    return const Center(
+                                    return Center(
                                       child: Icon(
                                         Icons.image_outlined,
                                         size: 60,

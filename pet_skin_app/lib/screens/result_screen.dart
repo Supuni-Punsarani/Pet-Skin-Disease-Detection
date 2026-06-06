@@ -29,7 +29,7 @@ class ResultScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Identified Result', style: AppTextStyles.heading1)
+            Text('Identified Result', style: AppTextStyles.heading1)
                 .animate()
                 .fadeIn(duration: 500.ms)
                 .slideX(begin: -0.2, end: 0),
@@ -141,7 +141,7 @@ class ResultScreen extends StatelessWidget {
                   _ResultRow(
                     label: 'Confidence',
                     value: '$confidencePct%',
-                    valueStyle: const TextStyle(
+                    valueStyle: TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
                       color: AppColors.textDark,
@@ -165,7 +165,7 @@ class ResultScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Severity',
+                            Text('Severity',
                                 style: AppTextStyles.caption),
                             const SizedBox(height: 6),
                             SeverityBadge(severity: result.severity),
@@ -176,7 +176,7 @@ class ResultScreen extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text('Pet Type',
+                            Text('Pet Type',
                                 style: AppTextStyles.caption),
                             const SizedBox(height: 6),
                             Text(result.petType,
@@ -191,7 +191,7 @@ class ResultScreen extends StatelessWidget {
             ).animate().fadeIn(delay: 200.ms, duration: 500.ms).slideY(begin: 0.2, end: 0),
 
             const SizedBox(height: 20),
-            const Text('About This Condition', style: AppTextStyles.heading2)
+            Text('About This Condition', style: AppTextStyles.heading2)
                 .animate().fadeIn(delay: 400.ms),
             const SizedBox(height: 10),
             Text(result.description, style: AppTextStyles.body)
@@ -199,7 +199,7 @@ class ResultScreen extends StatelessWidget {
             const SizedBox(height: 20),
 
             if (result.matchedSymptoms.isNotEmpty) ...[
-              const Text('Matched Symptoms', style: AppTextStyles.heading2)
+              Text('Matched Symptoms', style: AppTextStyles.heading2)
                   .animate().fadeIn(delay: 600.ms),
               const SizedBox(height: 10),
               Wrap(
@@ -249,7 +249,7 @@ class ResultScreen extends StatelessWidget {
 
             const SizedBox(height: 28),
 
-            const Text('Professional Treatment Plan', style: AppTextStyles.heading2)
+            Text('Professional Treatment Plan', style: AppTextStyles.heading2)
                 .animate().fadeIn(delay: 900.ms),
             const SizedBox(height: 14),
 
@@ -382,7 +382,7 @@ class _TreatmentCard extends StatelessWidget {
           ),
           Expanded(
               child: Text(text,
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 14,
                       height: 1.4,
                       color: AppColors.textMedium))),

@@ -127,7 +127,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     const SizedBox(height: 20),
 
-                    const Center(
+                    Center(
                       child: Text(
                         'Sign In',
                         style: TextStyle(
@@ -160,7 +160,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     TextFormField(
                       controller: _passwordCtrl,
                       obscureText: _obscurePassword,
-                      style: const TextStyle(fontSize: 14, color: AppColors.textDark),
+                      style: TextStyle(fontSize: 14, color: AppColors.textDark),
                       validator: (v) {
                         if (v == null || v.isEmpty) return 'Password is required';
                         if (v.length < 6) return 'Password must be at least 6 characters';
@@ -244,7 +244,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: OutlinedButton.icon(
                         onPressed: isLoading ? null : _signInWithGoogle,
                         icon: const Text('G', style: TextStyle(color: Color(0xFFDB4437), fontWeight: FontWeight.bold, fontSize: 18)),
-                        label: const Text('Continue with Google',
+                        label: Text('Continue with Google',
                             style: TextStyle(
                                 fontSize: 15,
                                 fontWeight: FontWeight.w600,
@@ -301,7 +301,7 @@ class _SignInScreenState extends State<SignInScreen> {
       obscureText: obscure,
       keyboardType: keyboardType,
       validator: validator,
-      style: const TextStyle(fontSize: 14, color: AppColors.textDark),
+      style: TextStyle(fontSize: 14, color: AppColors.textDark),
       decoration: _inputDeco(label, icon),
     );
   }
@@ -310,18 +310,18 @@ class _SignInScreenState extends State<SignInScreen> {
     return InputDecoration(
       labelText: label.isEmpty ? null : label,
       hintText: label.isEmpty ? null : label,
-      labelStyle: const TextStyle(fontSize: 13, color: AppColors.textMedium),
+      labelStyle: TextStyle(fontSize: 13, color: AppColors.textMedium),
       prefixIcon: Icon(icon, color: AppColors.primary, size: 18),
       suffixIcon: suffix,
       filled: true,
       fillColor: AppColors.surface,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.decorativeCircle),
+        borderSide: BorderSide(color: AppColors.decorativeCircle),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.decorativeCircle),
+        borderSide: BorderSide(color: AppColors.decorativeCircle),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),

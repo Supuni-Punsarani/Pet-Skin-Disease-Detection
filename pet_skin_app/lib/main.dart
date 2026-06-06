@@ -5,6 +5,7 @@ import 'package:app_links/app_links.dart';
 import 'theme/app_theme.dart';
 import 'providers/diagnosis_provider.dart';
 import 'providers/auth_provider.dart';
+import 'providers/theme_provider.dart';
 import 'services/firebase_service.dart';
 import 'screens/splash_screen.dart';
 import 'screens/sign_in_screen.dart';
@@ -40,6 +41,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => ThemeProvider()..init()),
         ChangeNotifierProvider(create: (_) => AuthProvider()..init()),
         ChangeNotifierProvider(create: (_) => DiagnosisProvider()),
       ],
@@ -101,10 +103,15 @@ class _PetSkinAppState extends State<PetSkinApp> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+    AppColors.isDark = themeProvider.isDarkMode;
+
     return MaterialApp(
       title: 'PetDerm AI',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
+      darkTheme: AppTheme.darkTheme,
+      themeMode: themeProvider.themeMode,
       navigatorKey: navigatorKey,
       initialRoute: '/',
       onGenerateRoute: (settings) {

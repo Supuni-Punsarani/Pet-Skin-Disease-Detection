@@ -139,7 +139,7 @@ class _VetLocationScreenState extends State<VetLocationScreen> {
                         color: Colors.white, size: 18),
                   ),
                   const SizedBox(width: 8),
-                  const Text(
+                  Text(
                     'Nearby Vets',
                     style: TextStyle(
                       fontSize: 17,
@@ -198,7 +198,7 @@ class _VetLocationScreenState extends State<VetLocationScreen> {
                   children: [
                     const Text('🔍', style: TextStyle(fontSize: 16)),
                     const SizedBox(width: 10),
-                    const Expanded(
+                    Expanded(
                       child: Text(
                         'Search vet clinics near me...',
                         style: TextStyle(
@@ -416,7 +416,7 @@ class _VetLocationScreenState extends State<VetLocationScreen> {
             children: [
               const Icon(Icons.location_off_rounded, size: 48, color: Colors.grey),
               const SizedBox(height: 16),
-              Text(_errorMsg!, textAlign: TextAlign.center, style: const TextStyle(color: AppColors.textMedium)),
+              Text(_errorMsg!, textAlign: TextAlign.center, style: TextStyle(color: AppColors.textMedium)),
               const SizedBox(height: 16),
               ElevatedButton(onPressed: _loadVets, child: const Text('Try Again')),
             ],
@@ -435,7 +435,7 @@ class _VetLocationScreenState extends State<VetLocationScreen> {
         children: [
           Text(
             '${_clinics.length} veterinary clinics found within 10km',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 12,
               color: AppColors.textLight,
             ),
@@ -523,7 +523,7 @@ class _MapPin extends StatelessWidget {
           ),
           child: Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 8,
               fontWeight: FontWeight.w700,
               color: AppColors.textDark,
@@ -612,7 +612,7 @@ class _ClinicCard extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       clinic.address,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 11,
                         color: AppColors.textLight,
                       ),
@@ -653,7 +653,7 @@ class _ClinicCard extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 '${clinic.distanceKm.toStringAsFixed(1)} km',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textLight,
@@ -663,7 +663,7 @@ class _ClinicCard extends StatelessWidget {
                 width: 3,
                 height: 3,
                 margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.textLight,
                   shape: BoxShape.circle,
                 ),
@@ -672,7 +672,7 @@ class _ClinicCard extends StatelessWidget {
               const SizedBox(width: 4),
               Text(
                 '${clinic.rating} (${clinic.reviewCount})',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 11,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textLight,

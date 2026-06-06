@@ -97,7 +97,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
             child: Container(
               width: 280,
               height: 280,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.decorativeCircle,
                 shape: BoxShape.circle,
               ),
@@ -128,7 +128,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                           Container(
                             width: 85,
                             height: 85,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                               color: AppColors.decorativeCircle,
                               shape: BoxShape.circle,
                             ),
@@ -144,7 +144,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                     const SizedBox(height: 30),
 
                     // Titles
-                    const Center(
+                    Center(
                       child: Text(
                         'Create New Password',
                         style: TextStyle(
@@ -190,7 +190,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           // New Password
-                          const Text(
+                          Text(
                             'New Password',
                             style: TextStyle(
                               fontSize: 14,
@@ -202,7 +202,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                           TextFormField(
                             controller: _passwordCtrl,
                             obscureText: _obscurePassword,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               color: AppColors.textDark,
                             ),
@@ -233,7 +233,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                                ),
                                helperText: 'Must be 6-14 characters with uppercase, lowercase, numbers, and symbols.',
                                helperMaxLines: 2,
-                               helperStyle: const TextStyle(fontSize: 11, color: AppColors.textMedium),
+                               helperStyle: TextStyle(fontSize: 11, color: AppColors.textMedium),
                                prefixIcon: const Icon(
                                  Icons.lock_outline_rounded,
                                  color: AppColors.primary,
@@ -275,7 +275,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                           const SizedBox(height: 20),
 
                           // Confirm Password
-                          const Text(
+                          Text(
                             'Confirm Password',
                             style: TextStyle(
                               fontSize: 14,
@@ -287,7 +287,7 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                           TextFormField(
                             controller: _confirmPasswordCtrl,
                             obscureText: _obscureConfirmPassword,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 14,
                               color: AppColors.textDark,
                             ),

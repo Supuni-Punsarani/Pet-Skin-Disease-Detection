@@ -70,7 +70,7 @@ class _SymptomQuestion1ScreenState extends State<SymptomQuestion1Screen> {
               style: AppTextStyles.caption.copyWith(color: AppColors.primary),
             ),
             const SizedBox(height: 20),
-            const Text('Tell Us More About\nSymptoms',
+            Text('Tell Us More About\nSymptoms',
                 style: AppTextStyles.heading1),
             const SizedBox(height: 20),
             Container(
@@ -96,7 +96,7 @@ class _SymptomQuestion1ScreenState extends State<SymptomQuestion1Screen> {
                             color: AppColors.primary, size: 18),
                       ),
                       const SizedBox(width: 10),
-                      const Expanded(
+                      Expanded(
                         child: Text(
                           'How long has the skin problem been present?',
                           style: AppTextStyles.bodyBold,

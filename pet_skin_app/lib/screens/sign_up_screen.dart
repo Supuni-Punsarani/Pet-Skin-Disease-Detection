@@ -113,7 +113,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const SizedBox(height: 16),
 
                     // ignore: prefer_const_constructors
-                    const Center(
+                    Center(
                       child: Column(
                         children: [
                           Text(
@@ -202,7 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
 
                     const SizedBox(height: 24),
-                    const Divider(color: AppColors.decorativeCircle),
+                    Divider(color: AppColors.decorativeCircle),
                     const SizedBox(height: 16),
 
                     // --- OWNER DETAILS ---
@@ -257,7 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     TextFormField(
                       controller: _passwordCtrl,
                       obscureText: _obscurePassword,
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 14, color: AppColors.textDark),
                       validator: (v) {
                         if (v == null || v.isEmpty) return 'Password is required';
@@ -364,7 +364,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       obscureText: obscure,
       keyboardType: keyboardType,
       validator: validator,
-      style: const TextStyle(fontSize: 14, color: AppColors.textDark),
+      style: TextStyle(fontSize: 14, color: AppColors.textDark),
       decoration: _inputDeco(label, icon),
     );
   }
@@ -375,19 +375,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
       hintText: label.isEmpty ? null : label,
       helperText: helperText,
       helperMaxLines: 2,
-      helperStyle: const TextStyle(fontSize: 11, color: AppColors.textMedium),
-      labelStyle: const TextStyle(fontSize: 13, color: AppColors.textMedium),
+      helperStyle: TextStyle(fontSize: 11, color: AppColors.textMedium),
+      labelStyle: TextStyle(fontSize: 13, color: AppColors.textMedium),
       prefixIcon: Icon(icon, color: AppColors.primary, size: 18),
       suffixIcon: suffix,
       filled: true,
       fillColor: AppColors.surface,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.decorativeCircle),
+        borderSide: BorderSide(color: AppColors.decorativeCircle),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.decorativeCircle),
+        borderSide: BorderSide(color: AppColors.decorativeCircle),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(14),

@@ -26,7 +26,7 @@ class TreatmentScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Treatment Guidance', style: AppTextStyles.heading1)
+            Text('Treatment Guidance', style: AppTextStyles.heading1)
                 .animate()
                 .fadeIn(duration: 500.ms)
                 .slideX(begin: -0.2, end: 0),
@@ -78,7 +78,7 @@ class TreatmentScreen extends StatelessWidget {
 
             const SizedBox(height: 24),
 
-            const Text('Recommended Steps', style: AppTextStyles.heading2)
+            Text('Recommended Steps', style: AppTextStyles.heading2)
                 .animate().fadeIn(delay: 300.ms),
             const SizedBox(height: 14),
 

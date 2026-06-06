@@ -94,7 +94,7 @@ class _SymptomQuestion2ScreenState extends State<SymptomQuestion2Screen> {
               style: AppTextStyles.caption.copyWith(color: AppColors.primary),
             ),
             const SizedBox(height: 20),
-            const Text('Tell Us More About\nSymptoms',
+            Text('Tell Us More About\nSymptoms',
                 style: AppTextStyles.heading1),
             const SizedBox(height: 20),
 

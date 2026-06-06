@@ -48,7 +48,7 @@ class AppScaffold extends StatelessWidget {
         title: title != null
             ? Text(
                 title!,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.textDark,
@@ -79,7 +79,7 @@ class AppScaffold extends StatelessWidget {
               child: Container(
                 width: 200,
                 height: 200,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   color: AppColors.decorativeCircle,
                   shape: BoxShape.circle,
                 ),
@@ -116,7 +116,7 @@ class ProfileAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => showProfileMenu(context),
-      child: const CircleAvatar(
+      child: CircleAvatar(
         radius: 18,
         backgroundColor: AppColors.decorativeCircle,
         child: Icon(Icons.person, size: 20, color: AppColors.primary),

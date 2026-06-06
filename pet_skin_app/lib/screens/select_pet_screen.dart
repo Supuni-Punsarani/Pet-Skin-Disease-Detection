@@ -57,7 +57,7 @@ class SelectPetScreen extends StatelessWidget {
                 const Spacer(),
 
                 // Title
-                const Text(
+                Text(
                   'Select Your Pet Type',
                   style: TextStyle(
                     fontSize: 22,

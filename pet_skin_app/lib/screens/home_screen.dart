@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             child: Container(
               width: 220,
               height: 220,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 color: AppColors.decorativeCircle,
                 shape: BoxShape.circle,
               ),
@@ -35,11 +35,11 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 28),
                   _buildWelcomeCard(context),
                   const SizedBox(height: 28),
-                  const Text('What We Do', style: AppTextStyles.heading2),
+                  Text('What We Do', style: AppTextStyles.heading2),
                   const SizedBox(height: 14),
                   _buildFeatureGrid(context),
                   const SizedBox(height: 28),
-                  const Text('Common Skin Conditions', style: AppTextStyles.heading2),
+                  Text('Common Skin Conditions', style: AppTextStyles.heading2),
                   const SizedBox(height: 14),
                   _buildDiseaseCards(context),
                   const SizedBox(height: 100),
@@ -66,7 +66,7 @@ class HomeScreen extends StatelessWidget {
           child: const Icon(Icons.monitor_heart_outlined, color: Colors.white, size: 22),
         ),
         const SizedBox(width: 12),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
