@@ -206,24 +206,39 @@ class _ResetPasswordConfirmScreenState extends State<ResetPasswordConfirmScreen>
                               fontSize: 14,
                               color: AppColors.textDark,
                             ),
-                            validator: (v) {
-                              if (v == null || v.isEmpty) return 'Password is required';
-                              if (v.length < 6) return 'Password must be at least 6 characters';
-                              if (!RegExp(r'[A-Za-z]').hasMatch(v)) return 'Password must contain at least one letter';
-                              if (!RegExp(r'[0-9]').hasMatch(v)) return 'Password must contain at least one number';
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              hintText: 'Enter new password',
-                              hintStyle: TextStyle(
-                                fontSize: 14,
-                                color: Colors.grey.shade400,
-                              ),
-                              prefixIcon: const Icon(
-                                Icons.lock_outline_rounded,
-                                color: AppColors.primary,
-                                size: 18,
-                              ),
+                             validator: (v) {
+                               if (v == null || v.isEmpty) return 'Password is required';
+                               if (v.length < 6 || v.length > 14) {
+                                 return 'Password must be between 6 and 14 characters';
+                               }
+                               if (!RegExp(r'[A-Z]').hasMatch(v)) {
+                                 return 'Password must contain at least one uppercase letter';
+                               }
+                               if (!RegExp(r'[a-z]').hasMatch(v)) {
+                                 return 'Password must contain at least one lowercase letter';
+                               }
+                               if (!RegExp(r'[0-9]').hasMatch(v)) {
+                                 return 'Password must contain at least one number';
+                               }
+                               if (!RegExp(r'[^a-zA-Z0-9\s]').hasMatch(v)) {
+                                 return 'Password must contain at least one symbol';
+                               }
+                               return null;
+                             },
+                             decoration: InputDecoration(
+                               hintText: 'Enter new password',
+                               hintStyle: TextStyle(
+                                 fontSize: 14,
+                                 color: Colors.grey.shade400,
+                               ),
+                               helperText: 'Must be 6-14 characters with uppercase, lowercase, numbers, and symbols.',
+                               helperMaxLines: 2,
+                               helperStyle: const TextStyle(fontSize: 11, color: AppColors.textMedium),
+                               prefixIcon: const Icon(
+                                 Icons.lock_outline_rounded,
+                                 color: AppColors.primary,
+                                 size: 18,
+                               ),
                               suffixIcon: IconButton(
                                 icon: Icon(
                                   _obscurePassword
