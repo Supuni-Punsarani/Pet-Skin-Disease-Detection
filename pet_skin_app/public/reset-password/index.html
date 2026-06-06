@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset Password – PetDerm AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #f0edff 0%, #faf9ff 60%, #e8f0fe 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Glowing background blobs */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.4;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .blob-1 { width: 400px; height: 400px; background: #a78bfa; top: -140px; left: -140px; }
+    .blob-2 { width: 350px; height: 350px; background: #818cf8; bottom: -110px; right: -110px; }
+    .blob-3 { width: 200px; height: 200px; background: #c4b5fd; top: 50%; left: 50%; transform: translate(-50%,-50%); }
+
+    /* Card */
+    .card {
+      background: rgba(255,255,255,0.93);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 44px 38px;
+      border-radius: 28px;
+      box-shadow: 0 24px 64px rgba(99,102,241,0.13), 0 4px 18px rgba(0,0,0,0.06);
+      border: 1.5px solid rgba(167,139,250,0.22);
+      width: 100%;
+      max-width: 420px;
+      z-index: 10;
+      text-align: center;
+      animation: slideUp 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes slideUp {
+      from { opacity:0; transform:translateY(32px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    /* App Icon */
+    .app-icon {
+      width: 76px; height: 76px;
+      background: linear-gradient(135deg, #6c63ff, #a78bfa);
+      border-radius: 22px;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 22px;
+      box-shadow: 0 10px 28px rgba(108,99,255,0.32);
+      font-size: 38px;
+    }
+
+    h2 {
+      font-size: 24px;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    /* Form */
+    .form-group { text-align: left; margin-bottom: 18px; }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+
+    .input-wrap { position: relative; }
+
+    input[type="password"], input[type="text"] {
+      width: 100%;
+      padding: 14px 46px 14px 16px;
+      border-radius: 14px;
+      border: 1.5px solid #e5e7eb;
+      background: #f9f8ff;
+      font-size: 14px;
+      font-family: inherit;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    input:focus {
+      border-color: #6c63ff;
+      background: #fff;
+      box-shadow: 0 0 0 3px rgba(108,99,255,0.1);
+    }
+    input.invalid { border-color: #ef4444; box-shadow: 0 0 0 3px rgba(239,68,68,0.1); }
+
+    .eye-btn {
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 17px;
+      color: #9ca3af;
+      user-select: none;
+      background: none; border: none;
+      padding: 0;
+    }
+
+    /* Strength indicator */
+    .strength-wrap { margin-top: 8px; }
+    .strength-bars { display: flex; gap: 4px; }
+    .strength-seg {
+      flex: 1; height: 4px; border-radius: 4px;
+      background: #e5e7eb;
+      transition: background 0.35s;
+    }
+    .strength-text { font-size: 11px; color: #9ca3af; text-align: right; margin-top: 4px; }
+
+    /* Primary button */
+    .btn-primary {
+      width: 100%;
+      padding: 15px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #6c63ff, #a78bfa);
+      color: #fff;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(108,99,255,0.3);
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      margin-top: 8px;
+      letter-spacing: 0.1px;
+    }
+    .btn-primary:hover  { opacity:0.9; box-shadow: 0 10px 28px rgba(108,99,255,0.38); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    /* Green success button */
+    .btn-success {
+      width: 100%;
+      padding: 15px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      color: #fff;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 22px rgba(16,185,129,0.3);
+      transition: opacity 0.2s, transform 0.15s;
+      margin-top: 8px;
+    }
+    .btn-success:hover  { opacity:0.9; }
+    .btn-success:active { transform: scale(0.98); }
+
+    /* Banners */
+    .banner {
+      padding: 13px 15px;
+      border-radius: 12px;
+      font-size: 13px;
+      line-height: 1.55;
+      text-align: left;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .banner-error { background:#fef2f2; color:#b91c1c; border:1px solid #fecaca; }
+
+    /* Spinner */
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2.5px solid rgba(255,255,255,0.35);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 8px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Success state */
+    .success-wrap { animation: slideUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+    .success-circle {
+      width: 84px; height: 84px;
+      background: linear-gradient(135deg, #10b981, #34d399);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 10px 28px rgba(16,185,129,0.3);
+      font-size: 42px;
+      animation: popIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+    .success-title { font-size: 22px; font-weight: 800; color: #065f46; margin-bottom: 10px; }
+    .success-body  { font-size: 14px; color: #6b7280; line-height: 1.65; margin-bottom: 28px; }
+
+    /* Countdown badge */
+    .countdown-badge {
+      display: inline-block;
+      background: rgba(16,185,129,0.12);
+      color: #065f46;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    /* Error / expired state */
+    .error-page-wrap { animation: slideUp 0.45s cubic-bezier(0.22,1,0.36,1) both; }
+
+    .footer-note {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 16px;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="card">
+
+    <!-- ① PASSWORD FORM -->
+    <div id="form-state">
+      <div class="app-icon">🐾</div>
+      <h2>Create New Password</h2>
+      <p class="subtitle">Enter your new password below. Make it strong and memorable!</p>
+
+      <div id="error-banner" class="banner banner-error"></div>
+
+      <form id="reset-form" onsubmit="handleReset(event)" novalidate>
+        <div class="form-group">
+          <label for="new-password">New Password</label>
+          <div class="input-wrap">
+            <input type="password" id="new-password"
+                   placeholder="At least 6 characters"
+                   required minlength="6"
+                   autocomplete="new-password"
+                   oninput="onPasswordInput(this.value)">
+            <button type="button" class="eye-btn" onclick="toggleEye('new-password',this)">👁</button>
+          </div>
+          <div class="strength-wrap">
+            <div class="strength-bars">
+              <div class="strength-seg" id="s1"></div>
+              <div class="strength-seg" id="s2"></div>
+              <div class="strength-seg" id="s3"></div>
+              <div class="strength-seg" id="s4"></div>
+            </div>
+            <div class="strength-text" id="strength-label"></div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="confirm-password">Confirm Password</label>
+          <div class="input-wrap">
+            <input type="password" id="confirm-password"
+                   placeholder="Re-enter new password"
+                   required minlength="6"
+                   autocomplete="new-password">
+            <button type="button" class="eye-btn" onclick="toggleEye('confirm-password',this)">👁</button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="submit-btn">
+          Reset Password
+        </button>
+      </form>
+    </div>
+
+    <!-- ② SUCCESS STATE -->
+    <div id="success-state" style="display:none;">
+      <div class="success-wrap">
+        <div class="success-circle">✓</div>
+        <div class="success-title">Password Changed! 🎉</div>
+        <p class="success-body">
+          Your password has been successfully updated.<br>
+          You can now sign in with your new password.
+        </p>
+        <div class="countdown-badge" id="countdown-badge">Redirecting to app in 3s…</div>
+        <button class="btn-success" onclick="openApp()">
+          Open PetDerm AI → Sign In
+        </button>
+        <p class="footer-note">
+          If the app doesn't open automatically,<br>close this page and open <strong>PetDerm AI</strong> manually.
+        </p>
+      </div>
+    </div>
+
+    <!-- ③ INVALID / EXPIRED LINK -->
+    <div id="error-state" style="display:none;">
+      <div class="error-page-wrap">
+        <div style="font-size:60px;margin-bottom:18px;">⚠️</div>
+        <h2>Link Expired</h2>
+        <p class="subtitle" style="margin-top:10px;">
+          This password reset link is invalid or has already been used.<br><br>
+          Please go back to the app and request a new link.
+        </p>
+        <button class="btn-primary" onclick="openApp()">
+          Back to PetDerm AI
+        </button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // ── Read URL params ───────────────────────────────────────────────────────
+    const p       = new URLSearchParams(window.location.search);
+    const mode    = p.get('mode');
+    const oobCode = p.get('oobCode');
+    const apiKey  = p.get('apiKey');
+
+    const SCHEME  = 'petderm';
+    const PACKAGE = 'com.petcare.pet_skin_app';
+
+    // ── Route on load ─────────────────────────────────────────────────────────
+    if (mode === 'resetPassword' && oobCode && apiKey) {
+      show('form-state');          // valid → show form
+    } else {
+      show('error-state');         // invalid / expired
+    }
+
+    // ── Deep-link to app ──────────────────────────────────────────────────────
+    function openApp() {
+      const android = /android/i.test(navigator.userAgent);
+      if (android) {
+        window.location.href =
+          `intent://signin#Intent;scheme=${SCHEME};package=${PACKAGE};end`;
+      } else {
+        window.location.href = `${SCHEME}://signin`;
+      }
+    }
+
+    // ── Reset password via Firebase REST API ──────────────────────────────────
+    async function handleReset(e) {
+      e.preventDefault();
+      hideBanner();
+
+      const pwd  = document.getElementById('new-password').value;
+      const cpwd = document.getElementById('confirm-password').value;
+      const btn  = document.getElementById('submit-btn');
+
+      // Validate
+      if (pwd.length < 6) { showBanner('Password must be at least 6 characters.'); return; }
+      if (pwd !== cpwd)   { showBanner('Passwords do not match. Please re-enter.'); return; }
+
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner"></span>Updating…';
+
+      try {
+        const res = await fetch(
+          `https://identitytoolkit.googleapis.com/v1/accounts:resetPassword?key=${apiKey}`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ oobCode, newPassword: pwd })
+          }
+        );
+        const data = await res.json();
+
+        if (res.ok) {
+          // ✅ Success → show success screen + countdown
+          show('success-state');
+          startCountdown();
+        } else {
+          const code = data?.error?.message ?? 'UNKNOWN';
+          showBanner(mapError(code));
+          btn.disabled = false;
+          btn.textContent = 'Reset Password';
+        }
+      } catch {
+        showBanner('Network error. Please check your connection and try again.');
+        btn.disabled = false;
+        btn.textContent = 'Reset Password';
+      }
+    }
+
+    // ── Countdown and auto-redirect ───────────────────────────────────────────
+    function startCountdown() {
+      let sec = 3;
+      const badge = document.getElementById('countdown-badge');
+      const iv = setInterval(() => {
+        sec--;
+        if (sec <= 0) {
+          clearInterval(iv);
+          badge.textContent = 'Opening app…';
+          openApp();
+        } else {
+          badge.textContent = `Redirecting to app in ${sec}s…`;
+        }
+      }, 1000);
+    }
+
+    // ── UI helpers ────────────────────────────────────────────────────────────
+    function show(id) {
+      ['form-state','success-state','error-state'].forEach(s =>
+        document.getElementById(s).style.display = s === id ? '' : 'none'
+      );
+    }
+
+    function showBanner(msg) {
+      const b = document.getElementById('error-banner');
+      b.innerHTML = '⚠ ' + msg;
+      b.style.display = 'block';
+      b.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    function hideBanner() {
+      document.getElementById('error-banner').style.display = 'none';
+    }
+
+    function toggleEye(id, btn) {
+      const inp = document.getElementById(id);
+      inp.type = inp.type === 'password' ? 'text' : 'password';
+      btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+    }
+
+    // ── Password strength ─────────────────────────────────────────────────────
+    function onPasswordInput(val) {
+      let score = 0;
+      if (val.length >= 6)  score++;
+      if (val.length >= 10) score++;
+      if (/[A-Z]/.test(val) && /[a-z]/.test(val)) score++;
+      if (/[0-9!@#$%^&*_\-]/.test(val)) score++;
+
+      const colors = ['#ef4444','#f97316','#eab308','#22c55e'];
+      const labels = ['Weak','Fair','Good','Strong 💪'];
+      for (let i = 1; i <= 4; i++) {
+        document.getElementById('s'+i).style.background =
+          i <= score ? colors[Math.max(score-1,0)] : '#e5e7eb';
+      }
+      document.getElementById('strength-label').textContent =
+        val.length ? (labels[score-1] || '') : '';
+    }
+
+    // ── Firebase error messages ───────────────────────────────────────────────
+    function mapError(code) {
+      const m = {
+        EXPIRED_OOB_CODE : 'This reset link has expired. Please request a new one from the app.',
+        INVALID_OOB_CODE : 'This link is invalid or has already been used.',
+        USER_DISABLED    : 'This account has been disabled.',
+        WEAK_PASSWORD    : 'Password is too weak — use at least 6 characters.',
+      };
+      return m[code] ?? 'Something went wrong. Please try again.';
+    }
+  </script>
+</body>
+</html>
