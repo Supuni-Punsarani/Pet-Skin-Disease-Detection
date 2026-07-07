@@ -1,0 +1,15 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# Cloud deployment requirements (CPU-only PyTorch — saves ~4 GB)
+# ──────────────────────────────────────────────────────────────────────────────
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9
+Pillow==10.3.0
+numpy>=1.19.0
+timm==0.6.13
+huggingface_hub>=0.20.0
+
+# CPU-only PyTorch — installed from the official CPU wheel index
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.3.0+cpu
+torchvision==0.18.0+cpu

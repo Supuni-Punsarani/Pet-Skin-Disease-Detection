@@ -9,17 +9,22 @@ import '../models/symptom_answer.dart';
 /// The base URL of the FastAPI backend.
 ///
 /// ─── IMPORTANT: Update this URL ───────────────────────────────────────────
-/// • Running on a real Android device on the same Wi-Fi network:
-///     Use your PC's local IP address, e.g. "http://192.168.1.100:8000"
-///     (Find it with: ipconfig → look for IPv4 Address under your Wi-Fi adapter)
 ///
-/// • Running on Android Emulator:
-///     Use "http://10.0.2.2:8000" — this maps to your host machine's localhost
+/// • CLOUD DEPLOYMENT (for all users — recommended):
+///     Use your Render.com URL, e.g. "https://petderm-ai.onrender.com"
+///     Deploy the backend folder to Render.com (free) — see DEPLOYMENT.md
 ///
-/// • Running on iOS Simulator:
+/// • LOCAL DEVELOPMENT on same Wi-Fi:
+///     Use your PC's local IP, e.g. "http://192.168.8.102:8000"
+///     (Find it with: ipconfig → look for IPv4 Address under Wi-Fi adapter)
+///
+/// • Android Emulator:
+///     Use "http://10.0.2.2:8000"
+///
+/// • iOS Simulator:
 ///     Use "http://localhost:8000"
 /// ──────────────────────────────────────────────────────────────────────────
-const String _kBackendBaseUrl = 'http://192.168.8.102:8000';
+const String _kBackendBaseUrl = 'https://petderm-ai.onrender.com';
 
 const String _kConnectionErrorMsg =
     'Cannot connect to the server at $_kBackendBaseUrl.\n'
