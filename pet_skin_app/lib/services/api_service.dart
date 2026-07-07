@@ -24,7 +24,7 @@ import '../models/symptom_answer.dart';
 /// • iOS Simulator:
 ///     Use "http://localhost:8000"
 /// ──────────────────────────────────────────────────────────────────────────
-const String _kBackendBaseUrl = 'https://petderm-ai.onrender.com';
+const String _kBackendBaseUrl = 'https://supunipunsarani-petderm-ai.hf.space';
 
 const String _kConnectionErrorMsg =
     'Cannot connect to the server at $_kBackendBaseUrl.\n'
