@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
 import '../services/firestore_service.dart';
 import '../widgets/common_widgets.dart';
@@ -15,6 +17,43 @@ class HistoryScreen extends StatefulWidget {
 class _HistoryScreenState extends State<HistoryScreen> {
   String _sortOrder = 'Newest';
   String _petFilter = 'All Pets';
+
+  Future<void> _handleLogout(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Text('Logout'),
+          content: const Text('Do you need to diagnose another animal?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, true), // Yes, diagnose another
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, false), // No, log out
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == null) return;
+
+    if (result) {
+      // Yes -> Navigate to select pet type and do diagnosis
+      Navigator.pushNamedAndRemoveUntil(context, '/select-pet', (route) => false);
+    } else {
+      // No -> Logout the app and navigate to login
+      await context.read<AuthProvider>().signOut();
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/signin', (route) => false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +73,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(22, 10, 22, 16),
-            child: Text('Scan History', style: AppTextStyles.heading1),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text('Scan History', style: AppTextStyles.heading1),
+                IconButton(
+                  icon: const Icon(Icons.logout_rounded, color: AppColors.primary),
+                  onPressed: () => _handleLogout(context),
+                  tooltip: 'Logout',
+                ),
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 22),

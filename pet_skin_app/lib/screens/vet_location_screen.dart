@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:provider/provider.dart';
+import '../providers/auth_provider.dart';
 import '../theme/app_theme.dart';
 import '../data/vet_data_service.dart';
 import '../widgets/common_widgets.dart';
@@ -17,6 +19,43 @@ class _VetLocationScreenState extends State<VetLocationScreen> {
   List<VetClinic> _clinics = [];
   bool _isLoading = true;
   String? _errorMsg;
+
+  Future<void> _handleLogout(BuildContext context) async {
+    final result = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          title: const Text('Logout'),
+          content: const Text('Do you need to diagnose another animal?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, true), // Yes, diagnose another
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, false), // No, log out
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (result == null) return;
+
+    if (result) {
+      // Yes -> Navigate to select pet type and do diagnosis
+      Navigator.pushNamedAndRemoveUntil(context, '/select-pet', (route) => false);
+    } else {
+      // No -> Logout the app and navigate to login
+      await context.read<AuthProvider>().signOut();
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(context, '/signin', (route) => false);
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -396,6 +435,59 @@ class _VetLocationScreenState extends State<VetLocationScreen> {
             // Clinic list
             Expanded(
               child: _buildList(),
+            ),
+
+            // Bottom Actions: History and Logout
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(context, '/history');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: const Text(
+                        'View History',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () => _handleLogout(context),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.primary,
+                        side: const BorderSide(color: AppColors.primary, width: 1.5),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: const Text(
+                        'Logout',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
