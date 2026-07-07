@@ -266,21 +266,21 @@ class SwinFusionModel:
 # ─── Exact symptom-match rules ────────────────────────────────────────────────
 _CAT_EXACT_MATCHES = {
     # "q1 q2 q3 q4 q5 q6" : disease_name
-    "C D B A B B": "Alopecia",
-    "B C A B A B": "Dermatitis",
-    "A D E A A C": "Flea Allergy",
+    "C B B A B B": "Alopecia",
+    "B C A C A C": "Dermatitis",
+    "D D E B A C": "Flea Allergy",
     "E A D A A A": "Healthy",
-    "B B B A D A": "Ringworm",
-    "A D A B D C": "Scabies",
+    "B B B B D B": "Ringworm",
+    "C D F B D C": "Scabies",
 }
 
 _DOG_EXACT_MATCHES = {
-    "A C A B A A": "Bacterial Dermatosis",
-    "C B B A B A": "Demodicosis",
-    "B C C C C B": "Fungal Infections",
+    "B C E C A C": "Bacterial Dermatosis",
+    "C B B B B B": "Demodicosis",
+    "B C C C C C": "Fungal Infections",
     "E A D A A A": "Healthy",
-    "D D E A E C": "Hypersensitivity Dermatitis",
-    "B B B A D A": "Ringworm",
+    "D D E B E C": "Hypersensitivity Dermatitis",
+    "B B B B D B": "Ringworm",
 }
 
 
